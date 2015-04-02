@@ -16,7 +16,6 @@ import urlparse
 #import spur
 import ssh_script
 
-#sys.path.append('/home/dust7955/rash0.81/rash0.81/rash0.81/lib/python2.7/site-packages/pexpect/pexpect')
 #from pexpect import *
 #Counters and Toggles
 arg_count = 0
@@ -97,7 +96,10 @@ def cli():
         cli = str(raw_input(PROMPT))
         if hist_toggle == 1:
             hfile.write(cli + '\n')
-
+        if 'racker_token' in locals():
+            pass
+        else:
+            racker_token = get_racker_token(config)
 #This is not just a horrible way to take the commands and arguements, it's also shitty way to sanatize the input for one specific scenario
 #I miss perl :(
         cli = re.sub('  ',' ', cli.rstrip())
@@ -176,6 +178,21 @@ def cli():
         	
 #        if len(cli.split(' ')) ==2:
 
+    if len(cli.split(' ')) ==3:
+        command,arg_one,arg_two = cli.split()
+        if cli.isdigit():
+            if no_auth == 1:
+                racker_token =0
+            else:
+                racker_token = get_racker_token(config)
+            gnextservers(cli, racker_token)
+            pprint(servers)
+            #server_choice = raw_input("Which Server > ")
+            #bastion = raw_input("Bastion> ")
+            ssh_expect_bast_through(username, arg_one, int(arg_two),racker_token)
+            
+ 
+
         if valid == 0:
             print("Unrecoginized Command")
 
@@ -248,6 +265,8 @@ def ssh_expect_bast_through(user, bastion, server_number, token):
         #print(password) 
         if bastion == "dfw":
             bastion = "cbast1.dfw1.corp.rackspace.com"
+        elif bastion == "lon":
+            bastion = "cbast.lon1.rackspace.com"
             
         ssh_script.ssh_through_bastion(user, bastion, ip, password)
         return ssh_line
@@ -425,6 +444,7 @@ imp <user id> - impersonation prompt
 gtoken - refresh your token
 gdbinstances or gdbin - enumerate database instances 
 
+<ddi> - display servers, select a server, select a bastion, then it will ssh through the bastion to the server
 servers - show servers 
 tokens - show tokens
 mytoken - show your token 
@@ -507,10 +527,6 @@ if arg_count == 3:
         ssh_expect_b(username, arguement)
     bye()	    
 
-#	if __name__ == '__main__':
-#    threading.Thread(target=cli).start()
-#    threading.Timer(2, interrupt).start()
-
 if arg_count == 4:
     command = sys.argv[1]
     arg_one = sys.argv[2]
@@ -526,10 +542,4 @@ if arg_count == 4:
         bastion = raw_input("Bastion> ")
         ssh_expect_bast_through(username, bastion, int(server_choice),racker_token)
 
-#        quit()
-    
-########################################################################################
-#An ssh function that you give the ddi and it gives you server names and rack shit
-# ssh ddi -> guser -> gettoken -> gservers -> menu selection -> rack password -> ssh expect
-# fucking hell
 ########################################################################################

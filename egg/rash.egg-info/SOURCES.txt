@@ -1,8 +1,0 @@
-setup.py
-rash/__init__.py
-rash/rash.py
-rash.egg-info/PKG-INFO
-rash.egg-info/SOURCES.txt
-rash.egg-info/dependency_links.txt
-rash.egg-info/entry_points.txt
-rash.egg-info/top_level.txt
