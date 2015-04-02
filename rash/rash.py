@@ -174,6 +174,7 @@ def cli():
             bastion = raw_input("Bastion> ")
             ssh_expect_bast_through(username, bastion, int(server_choice),racker_token)
         	
+#        if len(cli.split(' ')) ==2:
 
         if valid == 0:
             print("Unrecoginized Command")
