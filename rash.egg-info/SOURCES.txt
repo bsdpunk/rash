@@ -11,5 +11,6 @@ rash.egg-info/PKG-INFO
 rash.egg-info/SOURCES.txt
 rash.egg-info/dependency_links.txt
 rash.egg-info/entry_points.txt
+rash.egg-info/pbr.json
 rash.egg-info/requires.txt
 rash.egg-info/top_level.txt

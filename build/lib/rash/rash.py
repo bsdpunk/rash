@@ -39,7 +39,7 @@ warnings.filterwarnings("ignore")
 tokens = {}
 servers = {}
 databases = {}
-
+username = ''
 
 
 
@@ -70,7 +70,7 @@ def Exit_gracefully(signal, frame):
 
 def get_racker_token(config):
     signal.signal(signal.SIGINT, Exit_gracefully)
-
+    global username
     username = config["default"][0]["username"]
     password = config["default"][0]["password"]
 
@@ -217,6 +217,34 @@ def ssh_expect(server_number, token):
 ###This needs to verify that it's an ipv4 address, via JSON not regex...I implimented this a different way somewhere else need to swap it out...maybe an old version lost due to careless version contorl....hmmmm 
 ###I was just going to throw this to a shell with pexpect, but I'm fucking tired, maybe tomorrow 
 ###############################################################################################################################
+
+
+def ssh_expect_b(user, bastion):
+    #global servers
+    #print(server_number)
+    #print(server_count)
+    #try:
+    #    server_number = int(server_number)
+    #except ValueError:
+    #    pass
+    #if isinstance( server_number, (int) ) and server_count >= server_number:
+    #    rack_pass = grackid(servers[int(server_number)]['id'],token)
+    #    ssh_line = "ssh rack@"+servers[int(server_number)]['ip']+"    "+rack_pass[1:-1]
+        
+    #    ip = servers[int(server_number)]['ip']
+#       username = 'rack'
+    #    password = rack_pass
+        #print(password) 
+    #    ssh_script.ssh(ip, password)
+    #    return ssh_line
+    #else: 
+    #    print("This is not a valid option")
+    print(bastion)
+    print(user)
+    if bastion == "dfw":
+        bastion = "cbast1.dfw1.corp.rackspace.com"
+    ssh_script.ssh_bastion(user, bastion)    
+
 
 ###If you want to know why this function exists you'll have to ask me in person
 def gservers(ddi, token):
@@ -439,7 +467,8 @@ if arg_count == 3:
     if command == "ssh":
         print(ssh_expect(arguement, racker_token))
         valid = 1
-#    if command == 
+    if command == "bastion":
+        ssh_expect_b(username, arguement)
     bye()	    
 
 #	if __name__ == '__main__':
