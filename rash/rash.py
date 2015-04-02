@@ -140,7 +140,8 @@ def cli():
             if command == "ssh":
                 print(ssh_expect(arguement, racker_token))
                 valid = 1
-		
+  	
+	
         if cli == "servers":
             pprint(servers)
             valid = 1
@@ -162,7 +163,17 @@ def cli():
         if cli == "gtoken":
             print(get_racker_token(config))
             valid = 1
-	
+        if cli.isdigit():
+            if no_auth == 1:
+                racker_token =0
+            else:
+                racker_token = get_racker_token(config)
+            gnextservers(cli, racker_token)
+            pprint(servers)
+            server_choice = raw_input("Which Server > ")
+            bastion = raw_input("Bastion> ")
+            ssh_expect_bast_through(username, bastion, int(server_choice),racker_token)
+        	
 
         if valid == 0:
             print("Unrecoginized Command")
@@ -217,6 +228,30 @@ def ssh_expect(server_number, token):
 ###This needs to verify that it's an ipv4 address, via JSON not regex...I implimented this a different way somewhere else need to swap it out...maybe an old version lost due to careless version contorl....hmmmm 
 ###I was just going to throw this to a shell with pexpect, but I'm fucking tired, maybe tomorrow 
 ###############################################################################################################################
+
+def ssh_expect_bast_through(user, bastion, server_number, token):
+    global servers
+    #print(server_number)
+    #print(server_count)
+    try:
+        server_number = int(server_number)
+    except ValueError:
+        pass
+    if isinstance( server_number, (int) ) and server_count >= server_number:
+        rack_pass = grackid(servers[int(server_number)]['id'],token)
+        ssh_line = "ssh rack@"+servers[int(server_number)]['ip']+"    "+rack_pass[1:-1]
+        
+        ip = servers[int(server_number)]['ip']
+#       username = 'rack'
+        password = rack_pass
+        #print(password) 
+        if bastion == "dfw":
+            bastion = "cbast1.dfw1.corp.rackspace.com"
+            
+        ssh_script.ssh_through_bastion(user, bastion, ip, password)
+        return ssh_line
+    else: 
+        print("This is not a valid option")
 
 
 def ssh_expect_b(user, bastion):
@@ -475,7 +510,23 @@ if arg_count == 3:
 #    threading.Thread(target=cli).start()
 #    threading.Timer(2, interrupt).start()
 
+if arg_count == 4:
+    command = sys.argv[1]
+    arg_one = sys.argv[2]
+    arg_two = sys.argv[3]
+    if command == "through":
+        if no_auth == 1:
+            racker_token =0
+        else:
+            racker_token = get_racker_token(config)
+        gnextservers(command, racker_token)
+        pprint(servers)
+        server_choice = raw_input("Server number> ")
+        bastion = raw_input("Bastion> ")
+        ssh_expect_bast_through(username, bastion, int(server_choice),racker_token)
 
+#        quit()
+    
 ########################################################################################
 #An ssh function that you give the ddi and it gives you server names and rack shit
 # ssh ddi -> guser -> gettoken -> gservers -> menu selection -> rack password -> ssh expect
