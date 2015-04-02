@@ -57,18 +57,18 @@ def ssh_bastion(user, bastion):
 
     output.append('match_max 100000\n')
 
-    output.append('expect {\n')
-    #output.append('\t-re {[P|p]assword: } {\n')
-    output.append('\t\tsleep .1\n')
-    #print(password)
-    #output.append('\t\tsend -- "'+password+'\r"\n')
-    output.append('\t\tsleep .1\n')
-    output.append('\t}\n')
-    output.append('\t"Connection closed by remote host" {\n')
-    output.append('\t\texit\n')
-    output.append('\t}\n')
-    output.append('\t-re "\]. |incorrect password|sudoers|try again|root|ROOT|%% "\n')
-    output.append('}\n');
+#    #output.append('expect {\n')
+#    #output.append('\t-re {[P|p]assword: } {\n')
+#    output.append('\t\tsleep .1\n')
+#    #print(password)
+#    #output.append('\t\tsend -- "'+password+'\r"\n')
+#    output.append('\t\tsleep .1\n')
+#    output.append('\t}\n')
+#    output.append('\t"Connection closed by remote host" {\n')
+#    output.append('\t\texit\n')
+#    output.append('\t}\n')
+#    output.append('\t-re "\]. |incorrect password|sudoers|try again|root|ROOT|%% "\n')
+#    output.append('}\n');
 
     output.append('trap { stty rows [stty rows] columns [stty columns] < $spawn_out(slave,name)} WINCH\n')
 
