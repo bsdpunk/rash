@@ -11,9 +11,7 @@ sudo python setup.py install
 # Use
 Before you can use rash, you need to be on the rackspace network, as the first thing it does is, authenticates you, then grabs your rackspace token. 
 
-A .rash can be put in your home directory, if you do not want to type in your credentials everytime. 
-This is not recommended as you would be putting your credentials in a file, in plain text. 
-
+A .rash will be made in your home directory that will hold your credentials. 
 ### Example:
 
 ```
