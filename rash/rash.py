@@ -477,7 +477,11 @@ if arg_count == 2:
         pprint(servers)
         server_choice = raw_input("Which Server > ")
         ssh_expect(int(server_choice),racker_token)
-
+    if command == "mytoken":
+        racker_token = get_racker_token(config)
+        print(racker_token)
+        valid = 1
+        bye() 
 
 
 
