@@ -24,7 +24,7 @@ server_count = 0
 database_count = 0
 hist_toggle = 0
 prompt_r = 0
-arg_list = ['get-rack-id']
+arg_list = ['get-rack-id','get-ng-servers']
 for arg in sys.argv:
     arg_count += 1
 
@@ -125,8 +125,8 @@ def cli():
             if command == "gipinfo":
                 pprint(gipinfo(arguement, racker_token))
                 valid = 1 
-            if command == "gnextservers" or command == "gnservers":
-                gnextservers(arguement, racker_token)
+            if command == "get-ng-servers":
+                get_ng_servers(arguement, racker_token)
                 pprint(servers)
                 valid = 1 
             if command == "gdbinstances" or command == "gdbin":
@@ -170,7 +170,7 @@ def cli():
                 racker_token =0
             else:
                 racker_token = get_racker_token(config)
-            gnextservers(cli, racker_token)
+            get_ng_servers(cli, racker_token)
             pprint(servers)
             server_choice = raw_input("Which Server > ")
             bastion = raw_input("Bastion> ")
@@ -185,7 +185,7 @@ def cli():
                 racker_token =0
             else:
                 racker_token = get_racker_token(config)
-            gnextservers(cli, racker_token)
+            get_ng_servers(cli, racker_token)
             pprint(servers)
             #server_choice = raw_input("Which Server > ")
             #bastion = raw_input("Bastion> ")
@@ -321,7 +321,7 @@ def gservers(ddi, token):
 #############################################################################################################################
 
 
-def gnextservers(ddi, token):
+def get_ng_servers(ddi, token):
     datacenters = ['hkg', 'lon', 'iad', 'ord', 'syd', 'dfw']
     admin_user = guser(ddi,token)
     if admin_user == None:
@@ -429,7 +429,7 @@ def imp_prompt(ident,token):
         if len(imp_prompt.split(' ')) ==2:
             imp_prompt,arguement = imp_prompt.split()
             if imp_prompt == "gservers":
-                print(gnextservers(arguement,token))
+                print(get_ng_servers(arguement,token))
         if imp_prompt == "gtenant":
             print(gtenant(token))
 
@@ -438,7 +438,7 @@ def help_menu():
     help_var = """
 get-rack-id <uuid> - get rack password 
 gimpuser <username> - get impersonation token 
-gnextservers <ddi> - enumerate next gen servers, standard servers included
+get-ng-servers <ddi> - enumerate next gen servers, standard servers included
 guser <ddi> - get admin user 
 imp <user id> - impersonation prompt
 gtoken - refresh your token
@@ -473,7 +473,7 @@ if arg_count == 2:
             racker_token =0
         else:
             racker_token = get_racker_token(config)
-        gnextservers(command, racker_token)
+        get_ng_servers(command, racker_token)
         pprint(servers)
         server_choice = raw_input("Which Server > ")
         ssh_expect(int(server_choice),racker_token)
@@ -510,8 +510,8 @@ if arg_count == 3:
     if command == "gservers":
         print(gservers(arguement, racker_token))
         valid = 1
-    if command == "gnextservers" or command =="gnservers":
-        gnextservers(arguement, racker_token)
+    if command == "get-ng-servers":
+        get_ng_servers(arguement, racker_token)
         pprint(servers)
         valid = 1
     if command == "gdbinstances" or command == "gdbin":
@@ -540,7 +540,7 @@ if arg_count == 4:
             racker_token =0
         else:
             racker_token = get_racker_token(config)
-        gnextservers(command, racker_token)
+        get_ng_servers(command, racker_token)
         pprint(servers)
         server_choice = raw_input("Server number> ")
         bastion = raw_input("Bastion> ")
