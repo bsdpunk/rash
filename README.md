@@ -22,13 +22,13 @@ In the future rash will support the creation of this file as well as, a password
 Commands:
 
 ```
-grackid <uuid> - get rack password 
-gimpuser <username> - get impersonation token 
-gnextservers <ddi> - enumerate next gen servers, standard servers included
-guser <ddi> - get admin user 
-imp <user id> - impersonation prompt
-gtoken - refresh your token
-gdbinstances or gdbin - enumerate database instances 
+get-rack-id <uuid> - get rack password 
+get-imp-token <username> - get impersonation token 
+get-ng-servers <ddi> - enumerate next gen servers, standard servers included
+get-user <ddi> - get admin user 
+prompt-imp <user id> - impersonation prompt
+get-token - refresh your token
+get-db-instances - enumerate database instances 
 
 <ddi> - display servers, select a server, select a bastion, then it will ssh through the bastion to the server
 servers - show servers 

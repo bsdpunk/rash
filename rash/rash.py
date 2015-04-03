@@ -24,7 +24,7 @@ server_count = 0
 database_count = 0
 hist_toggle = 0
 prompt_r = 0
-arg_list = ['get-rack-id','get-ng-servers']
+arg_list = ['get-rack-id','get-ng-servers','get-user']
 for arg in sys.argv:
     arg_count += 1
 
@@ -133,8 +133,8 @@ def cli():
                 gdbinstances(arguement, racker_token)
                 pprint(databases)
                 valid = 1 
-            if command == "guser":        
-                print(guser(arguement, racker_token))
+            if command == "get-user":        
+                print(get_user(arguement, racker_token))
                 valid = 1
             if command == "imp":
                 imp_prompt(arguement, tokens[arguement])
@@ -213,7 +213,7 @@ def gipinfo(ip,token):
 
 
 
-def guser(tenant_id,token):
+def get_user(tenant_id,token):
     headers = {'content-type': 'application/json',"X-Auth-Token":token}
     second_r = requests.get("https://customer-admin.prod.dfw1.us.ci.rackspace.net/v3/customer_accounts/CLOUD/"+tenant_id+"/contacts?role=PRIMARY", headers=headers, verify=False)
     root = ET.fromstring(second_r.text)#ET.parse(second_r)
@@ -323,7 +323,7 @@ def gservers(ddi, token):
 
 def get_ng_servers(ddi, token):
     datacenters = ['hkg', 'lon', 'iad', 'ord', 'syd', 'dfw']
-    admin_user = guser(ddi,token)
+    admin_user = get_user(ddi,token)
     if admin_user == None:
         return(admin_user)
     imp_token = gimpuser(admin_user, token)
@@ -368,7 +368,7 @@ def get_ng_servers(ddi, token):
 
 def goldservers(ddi, token):
     datacenters = ['hkg', 'lon', 'iad', 'ord', 'syd', 'dfw']
-    admin_user = guser(ddi,token)
+    admin_user = get_user(ddi,token)
     if admin_user == None:
         return(admin_user)
     imp_token = gimpuser(admin_user, token)
@@ -383,7 +383,7 @@ def goldservers(ddi, token):
 #####As of right now I'm not going to document this, it's hella untested
 def gdbinstances(ddi, token):
     datacenters = ['hkg', 'lon', 'iad', 'ord', 'syd', 'dfw']
-    admin_user = guser(ddi,token)
+    admin_user = get_user(ddi,token)
     if admin_user == None:
         return(admin_user)
     imp_token = gimpuser(admin_user, token)
@@ -439,7 +439,7 @@ def help_menu():
 get-rack-id <uuid> - get rack password 
 gimpuser <username> - get impersonation token 
 get-ng-servers <ddi> - enumerate next gen servers, standard servers included
-guser <ddi> - get admin user 
+get-user <ddi> - get admin user 
 imp <user id> - impersonation prompt
 gtoken - refresh your token
 gdbinstances or gdbin - enumerate database instances, hella beta 
@@ -518,8 +518,8 @@ if arg_count == 3:
         gdbinstances(arguement, racker_token)
         pprint(databases)
         valid = 1 
-    if command == "guser":
-        print(guser(arguement, racker_token))
+    if command == "get-user":
+        print(get_user(arguement, racker_token))
         valid = 1
     if command == "mytoken":
         print(racker_token)
