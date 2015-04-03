@@ -24,7 +24,7 @@ server_count = 0
 database_count = 0
 hist_toggle = 0
 prompt_r = 0
-arg_list = ['get-rack-id','get-ng-servers','get-user']
+arg_list = ['get-rack-id','get-ng-servers','get-user', 'get-imp-token']
 for arg in sys.argv:
     arg_count += 1
 
@@ -108,8 +108,8 @@ def cli():
             if command == "get-rack-id":
                 print(get_rack_id(arguement, racker_token))
                 valid = 1
-            if command == "gimpuser":
-                new_token = gimpuser(arguement, racker_token)
+            if command == "get-imp-token":
+                new_token = get_imp_token(arguement, racker_token)
                 temp_dict = {arguement:new_token}
                 print(new_token)
                 global tokens
@@ -326,7 +326,7 @@ def get_ng_servers(ddi, token):
     admin_user = get_user(ddi,token)
     if admin_user == None:
         return(admin_user)
-    imp_token = gimpuser(admin_user, token)
+    imp_token = get_imp_token(admin_user, token)
     headers = {'content-type': 'application/json',"X-Auth-Token":imp_token}
     for dc in datacenters:    
         second_r = requests.get("https://"+dc+".servers.api.rackspacecloud.com/v2/"+ddi+"/servers", headers=headers, verify=False)
@@ -371,7 +371,7 @@ def goldservers(ddi, token):
     admin_user = get_user(ddi,token)
     if admin_user == None:
         return(admin_user)
-    imp_token = gimpuser(admin_user, token)
+    imp_token = get_imp_token(admin_user, token)
     headers = {'content-type': 'application/json',"X-Auth-Token":imp_token}
     #for dc in datacenters:    
     second_r = requests.get("https://servers.api.rackspacecloud.com/v1.0/"+ddi+"/servers/detail", headers=headers, verify=False)
@@ -386,7 +386,7 @@ def gdbinstances(ddi, token):
     admin_user = get_user(ddi,token)
     if admin_user == None:
         return(admin_user)
-    imp_token = gimpuser(admin_user, token)
+    imp_token = get_imp_token(admin_user, token)
     headers = {'content-type': 'application/json',"X-Auth-Token":imp_token}
     for dc in datacenters:    
         second_r = requests.get("https://"+dc+".databases.api.rackspacecloud.com/v1.0/"+ddi+"/instances", headers=headers, verify=False)
@@ -411,7 +411,7 @@ def gdbinstances(ddi, token):
     return(db_json)
 
 
-def gimpuser(user_id,token):
+def get_imp_token(user_id,token):
     payload = {"RAX-AUTH:impersonation": {"user": {"username": user_id},"expire-in-seconds": 10800}}
     headers = {'content-type': 'application/json',"X-Auth-Token":token}
     second_r = requests.post("https://identity-internal.api.rackspacecloud.com/v2.0/RAX-AUTH/impersonation-tokens", data=json.dumps(payload), headers=headers)
@@ -437,7 +437,7 @@ def help_menu():
 ####Why did I space the help like this, cause something something, then lazy
     help_var = """
 get-rack-id <uuid> - get rack password 
-gimpuser <username> - get impersonation token 
+get-imp-token <username> - get impersonation token 
 get-ng-servers <ddi> - enumerate next gen servers, standard servers included
 get-user <ddi> - get admin user 
 imp <user id> - impersonation prompt
@@ -504,8 +504,8 @@ if arg_count == 3:
     if command == "get-rack-id":
         print(get_rack_id(arguement, racker_token))
         valid = 1
-    if command == "gimpuser":
-        print(gimpuser(arguement, racker_token))
+    if command == "get-imp-token":
+        print(get_imp_token(arguement, racker_token))
         valid = 1
     if command == "gservers":
         print(gservers(arguement, racker_token))
