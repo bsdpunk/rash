@@ -26,7 +26,7 @@ get-rack-id <uuid> - get rack password
 get-imp-token <username> - get impersonation token 
 get-ng-servers <ddi> - enumerate next gen servers, standard servers included
 get-user <ddi> - get admin user 
-prompt-imp <user id> - impersonation prompt
+prompt-imp <user id> - impersonation prompt, Hella alpha
 get-token - refresh your token
 get-db-instances - enumerate database instances 
 

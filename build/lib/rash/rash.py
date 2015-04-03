@@ -24,7 +24,7 @@ server_count = 0
 database_count = 0
 hist_toggle = 0
 prompt_r = 0
-arg_list = ['get-rack-id','get-ng-servers','get-user', 'get-imp-token']
+arg_list = ['get-rack-id','get-ng-servers','get-user', 'get-imp-token', 'prompt-imp']
 for arg in sys.argv:
     arg_count += 1
 
@@ -129,14 +129,14 @@ def cli():
                 get_ng_servers(arguement, racker_token)
                 pprint(servers)
                 valid = 1 
-            if command == "gdbinstances" or command == "gdbin":
-                gdbinstances(arguement, racker_token)
+            if command == "get-databases" or command == "gdbin":
+                get_databases(arguement, racker_token)
                 pprint(databases)
                 valid = 1 
             if command == "get-user":        
                 print(get_user(arguement, racker_token))
                 valid = 1
-            if command == "imp":
+            if command == "prompt-imp":
                 imp_prompt(arguement, tokens[arguement])
                 valid = 1
             if command == "ssh":
@@ -162,7 +162,7 @@ def cli():
         if cli == "mytoken":
             print(racker_token)
             valid = 1
-        if cli == "gtoken":
+        if cli == "get-token":
             print(get_racker_token(config))
             valid = 1
         if cli.isdigit():
@@ -381,7 +381,7 @@ def goldservers(ddi, token):
 
 
 #####As of right now I'm not going to document this, it's hella untested
-def gdbinstances(ddi, token):
+def get_databases(ddi, token):
     datacenters = ['hkg', 'lon', 'iad', 'ord', 'syd', 'dfw']
     admin_user = get_user(ddi,token)
     if admin_user == None:
@@ -438,11 +438,11 @@ def help_menu():
     help_var = """
 get-rack-id <uuid> - get rack password 
 get-imp-token <username> - get impersonation token 
-get-ng-servers <ddi> - enumerate next gen servers, standard servers included
+get-ng-servers <ddi> - enumerate next gen servers
 get-user <ddi> - get admin user 
-imp <user id> - impersonation prompt
-gtoken - refresh your token
-gdbinstances or gdbin - enumerate database instances, hella beta 
+prompt-imp <user id> - impersonation prompt, hella alpha
+get-token - refresh your token
+get-databases - enumerate database instances, hella beta 
 
 <ddi> - display servers, select a server, select a bastion, then it will ssh through the bastion to the server
 servers - show servers 
@@ -514,8 +514,8 @@ if arg_count == 3:
         get_ng_servers(arguement, racker_token)
         pprint(servers)
         valid = 1
-    if command == "gdbinstances" or command == "gdbin":
-        gdbinstances(arguement, racker_token)
+    if command == "get-databases" or command == "gdbin":
+        get_databases(arguement, racker_token)
         pprint(databases)
         valid = 1 
     if command == "get-user":
