@@ -24,7 +24,7 @@ server_count = 0
 database_count = 0
 hist_toggle = 0
 prompt_r = 0
-
+arg_list = ['get-rack-id']
 for arg in sys.argv:
     arg_count += 1
 
@@ -105,8 +105,8 @@ def cli():
         cli = re.sub('  ',' ', cli.rstrip())
         if len(cli.split(' ')) ==2:
             command,arguement = cli.split()
-            if command == "grackid":
-                print(grackid(arguement, racker_token))
+            if command == "get-rack-id":
+                print(get_rack_id(arguement, racker_token))
                 valid = 1
             if command == "gimpuser":
                 new_token = gimpuser(arguement, racker_token)
@@ -176,7 +176,7 @@ def cli():
             bastion = raw_input("Bastion> ")
             ssh_expect_bast_through(username, bastion, int(server_choice),racker_token)
         	
-#        if len(cli.split(' ')) ==2:
+            #        if len(cli.split(' ')) ==2:
 
     if len(cli.split(' ')) ==3:
         command,arg_one,arg_two = cli.split()
@@ -196,7 +196,7 @@ def cli():
         if valid == 0:
             print("Unrecoginized Command")
 
-def grackid(uuid,token):
+def get_rack_id(uuid,token):
     headers = {'content-type': 'application/json',"X-Auth-Token":token}
     second_r = requests.get("https://passwords.servermill.rackspace.net/v1/"+uuid+"/password/current", headers=headers)
     rack_pass=second_r.text
@@ -232,7 +232,7 @@ def ssh_expect(server_number, token):
     except ValueError:
         pass
     if isinstance( server_number, (int) ) and server_count >= server_number:
-        rack_pass = grackid(servers[int(server_number)]['id'],token)
+        rack_pass = get_rack_id(servers[int(server_number)]['id'],token)
         ssh_line = "ssh rack@"+servers[int(server_number)]['ip']+"    "+rack_pass[1:-1]
         
         ip = servers[int(server_number)]['ip']
@@ -256,7 +256,7 @@ def ssh_expect_bast_through(user, bastion, server_number, token):
     except ValueError:
         pass
     if isinstance( server_number, (int) ) and server_count >= server_number:
-        rack_pass = grackid(servers[int(server_number)]['id'],token)
+        rack_pass = get_rack_id(servers[int(server_number)]['id'],token)
         ssh_line = "ssh rack@"+servers[int(server_number)]['ip']+"    "+rack_pass[1:-1]
         
         ip = servers[int(server_number)]['ip']
@@ -283,7 +283,7 @@ def ssh_expect_b(user, bastion):
     #except ValueError:
     #    pass
     #if isinstance( server_number, (int) ) and server_count >= server_number:
-    #    rack_pass = grackid(servers[int(server_number)]['id'],token)
+    #    rack_pass = get_rack_id(servers[int(server_number)]['id'],token)
     #    ssh_line = "ssh rack@"+servers[int(server_number)]['ip']+"    "+rack_pass[1:-1]
         
     #    ip = servers[int(server_number)]['ip']
@@ -436,13 +436,13 @@ def imp_prompt(ident,token):
 def help_menu():
 ####Why did I space the help like this, cause something something, then lazy
     help_var = """
-grackid <uuid> - get rack password 
+get-rack-id <uuid> - get rack password 
 gimpuser <username> - get impersonation token 
 gnextservers <ddi> - enumerate next gen servers, standard servers included
 guser <ddi> - get admin user 
 imp <user id> - impersonation prompt
 gtoken - refresh your token
-gdbinstances or gdbin - enumerate database instances 
+gdbinstances or gdbin - enumerate database instances, hella beta 
 
 <ddi> - display servers, select a server, select a bastion, then it will ssh through the bastion to the server
 servers - show servers 
@@ -501,8 +501,8 @@ if arg_count == 3:
     if command == "gipinfo":
         pprint(gipinfo(arguement, racker_token))
         valid = 1
-    if command == "grackid":
-        print(grackid(arguement, racker_token))
+    if command == "get-rack-id":
+        print(get_rack_id(arguement, racker_token))
         valid = 1
     if command == "gimpuser":
         print(gimpuser(arguement, racker_token))
