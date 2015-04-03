@@ -24,7 +24,7 @@ server_count = 0
 database_count = 0
 hist_toggle = 0
 prompt_r = 0
-arg_list = ['get-rack-id','get-ng-servers','get-user', 'get-imp-token', 'prompt-imp']
+arg_list = ['get-rack-id','get-ng-servers','get-user', 'get-imp-token', 'prompt-imp', 'get-databases']
 for arg in sys.argv:
     arg_count += 1
 
