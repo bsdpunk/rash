@@ -15,16 +15,19 @@ import getpass
 import urlparse
 #import spur
 import ssh_script
-
+import argparse
+import pkg_resources
 #from pexpect import *
 #Counters and Toggles
+
+version = pkg_resources.require("rash")[0].version
 arg_count = 0
 no_auth = 0
 server_count = 0
 database_count = 0
 hist_toggle = 0
 prompt_r = 0
-arg_list = ['get-rack-id','get-ng-servers','get-user', 'get-imp-token', 'prompt-imp']
+arg_list = ['get-rack-id','get-ng-servers','get-user', 'get-imp-token', 'prompt-imp', 'get-databases']
 for arg in sys.argv:
     arg_count += 1
 
@@ -455,33 +458,43 @@ quit - quit """
 def bye():
     exit()
 
+if arg_count > 1:
+    parser = argparse.ArgumentParser(description='Start rash without authentication')
+    #parser.add_argument('noauth', help='Start rash without authenticating to the API') 
+    #parser.add_argument('--noauth', nargs='?', const="noauth", default=0, help="--noauth Do not grab racker token when rash starts")
+    parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + version) 
+#    parser.add_argument('get-ng-servers', '--get-ng-servers', type=add)
+    args = parser.parse_args()
+    no_auth = args.noauth
+    print(args.noauth)
 
-if arg_count == 2:
-    command = sys.argv[1]
+
+#if arg_count == 2:
+#    command = sys.argv[1]
 #noauth is essentially for testing
-    if command == "noauth":
-        no_auth = 1
+#    if command == "noauth":
+#        no_auth = 1
 #history is to toggle writing a history file, there is currently no clean up so it is off by default
-    if command == "history":
-        hist_toggle = 1
-    if command == "roulette":
-        rando = random.randint(1, 3)
-    if command == "extra":
-        rash_p = config["default"][0]["prompt"]
-    if command.isdigit():
-        if no_auth == 1:
-            racker_token =0
-        else:
-            racker_token = get_racker_token(config)
-        get_ng_servers(command, racker_token)
-        pprint(servers)
-        server_choice = raw_input("Which Server > ")
-        ssh_expect(int(server_choice),racker_token)
-    if command == "mytoken":
-        racker_token = get_racker_token(config)
-        print(racker_token)
-        valid = 1
-        bye() 
+#    if command == "history":
+#        hist_toggle = 1
+#    if command == "roulette":
+#        rando = random.randint(1, 3)
+#    if command == "extra":
+#        rash_p = config["default"][0]["prompt"]
+#    if command.isdigit():
+#        if no_auth == 1:
+#            racker_token =0
+#        else:
+#            racker_token = get_racker_token(config)
+#        get_ng_servers(command, racker_token)
+#        pprint(servers)
+#        server_choice = raw_input("Which Server > ")
+#        ssh_expect(int(server_choice),racker_token)
+#    if command == "mytoken":
+#        racker_token = get_racker_token(config)
+#        print(racker_token)
+#        valid = 1
+#        bye() 
 
 
 
