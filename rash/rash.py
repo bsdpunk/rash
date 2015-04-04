@@ -463,11 +463,13 @@ if arg_count > 1:
     #parser.add_argument('noauth', help='Start rash without authenticating to the API') 
     #parser.add_argument('--noauth', nargs='?', const="noauth", default=0, help="--noauth Do not grab racker token when rash starts")
     parser.add_argument('-v', '--version', action='version', version='%(prog)s ' + version) 
-#    parser.add_argument('get-ng-servers', '--get-ng-servers', type=add)
+    #parser.add_argument('get-ng-servers', '--get-ng-servers', type=#add a thing here correalate with for loop)
     args = parser.parse_args()
     no_auth = args.noauth
     print(args.noauth)
 
+#for item in args.add:
+#    add(item)
 
 #if arg_count == 2:
 #    command = sys.argv[1]
