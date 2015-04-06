@@ -125,8 +125,8 @@ def cli():
                 goldservers(arguement, racker_token)
                 #pprint(servers)
                 valid = 1 
-            if command == "gipinfo":
-                pprint(gipinfo(arguement, racker_token))
+            if command == "get-ip-info":
+                pprint(get_ip_info(arguement, racker_token))
                 valid = 1 
             if command == "get-ng-servers":
                 get_ng_servers(arguement, racker_token)
@@ -207,7 +207,7 @@ def get_rack_id(uuid,token):
     return(rack_pass)
 
 
-def gipinfo(ip,token):
+def get_ip_info(ip,token):
     headers = {'content-type': 'application/json',"X-Auth-Token":token}
     second_r = requests.get("https://ipfinder.rackspace.com/json/"+ip, headers=headers, verify=False)
     ip_info=second_r.text
@@ -446,6 +446,7 @@ get-user <ddi> - get admin user
 prompt-imp <user id> - impersonation prompt, hella alpha
 get-token - refresh your token
 get-databases - enumerate database instances, hella beta 
+get-ip-info - get json from ipfinder about an ip, hella beta
 
 <ddi> - display servers, select a server, select a bastion, then it will ssh through the bastion to the server
 servers - show servers 
@@ -513,8 +514,8 @@ else:
 if arg_count == 3:
     command = sys.argv[1]
     arguement = sys.argv[2]
-    if command == "gipinfo":
-        pprint(gipinfo(arguement, racker_token))
+    if command == "get-ip-info":
+        pprint(get_ip_info(arguement, racker_token))
         valid = 1
     if command == "get-rack-id":
         print(get_rack_id(arguement, racker_token))
