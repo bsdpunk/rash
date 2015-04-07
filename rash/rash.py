@@ -386,7 +386,7 @@ def get_ng_servers(ddi, token):
                         else:
                             print("A server did not report an IPv4 address")
                             print(details["server"])
-    return(servers)
+    return(details)
 #########################
 
 
@@ -462,7 +462,7 @@ def imp_prompt(ident,token):
 def help_menu():
 ####Why did I space the help like this, cause something something, then lazy
     help_var = """
-get-rack-id <uuid> - get rack password 
+get-rack-id <uuid> or <ip> - get rack password 
 get-imp-token <username> - get impersonation token 
 get-ng-servers <ddi> - enumerate next gen servers
 get-user <ddi> - get admin user 
@@ -598,8 +598,8 @@ if arg_count == 4:
             racker_token = get_racker_token(config)
         get_ng_servers(command, racker_token)
         pprint(servers)
-        server_choice = raw_input("Server number> ")
-        bastion = raw_input("Bastion> ")
+        #server_choice = raw_input("Server number> ")
+        #bastion = raw_input("Bastion> ")
         ssh_expect_bast_through(username, bastion, int(server_choice),racker_token)
 
 ########################################################################################

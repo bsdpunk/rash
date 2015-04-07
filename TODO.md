@@ -1,3 +1,4 @@
+Proactively sanitize input
 Converting arguement parsing, to ~~argparse~~ ~~getopt~~ ~~custom arg parsing~~ ok ok argparse. --Branch argparse*
 --Convert the ipfinder to the new naming convention, currently gipinfo.
 Eliminate the current global variables in use: servers, databases, maybe not tokens
@@ -7,7 +8,9 @@ reduce number of api calls by, only checking lon for lon and taking lon out of u
 test get-databases
 get imp-token subshell properly working
 Don't break on unicode named servers
-get-rack-id to work with ip
+--get-rack-id to work with ip
+for servers in ng_servers print server int, name ,and ip
+
 
 Add EOF for <ddi>
 Clean up so text for "rash <ddi>" and "rash> <ddi>" show a more user friendly selection
