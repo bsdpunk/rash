@@ -27,7 +27,7 @@ server_count = 0
 database_count = 0
 hist_toggle = 0
 prompt_r = 0
-arg_list = ['get-rack-id','get-ng-servers','get-user', 'get-imp-token', 'prompt-imp', 'get-databases']
+arg_list = ['get-ip-info', 'get-rack-id','get-ng-servers','get-user', 'get-imp-token', 'prompt-imp', 'get-databases']
 for arg in sys.argv:
     arg_count += 1
 
@@ -65,7 +65,7 @@ else:
     config_file_new.write(config_f)
     config_file_new.close() 
 
-#Ending when intercepting a KeyboardInterrupt
+#Ending when intercepting a Keyboard, Interrupt
 def Exit_gracefully(signal, frame):
     sys.exit(0)
 
@@ -96,7 +96,12 @@ def cli():
         valid = 0
 
         signal.signal(signal.SIGINT, Exit_gracefully)
-        cli = str(raw_input(PROMPT))
+#        except EOFError:
+#            bye()
+        try:
+            cli = str(raw_input(PROMPT))
+        except EOFError:
+            bye()
         if hist_toggle == 1:
             hfile.write(cli + '\n')
         if 'racker_token' in locals():
