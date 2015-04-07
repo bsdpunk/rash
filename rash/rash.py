@@ -173,11 +173,16 @@ def cli():
         if cli == "get-token":
             print(get_racker_token(config))
             valid = 1
-        if cli.isdigit():
+        if cli.isdigit() or re.match("^https", cli):
             if no_auth == 1:
                 racker_token =0
             else:
                 racker_token = get_racker_token(config)
+            if re.match("^https",cli):
+                thesplit = cli.split('/')
+                cli = thesplit[4]
+                print(cli)
+
             get_ng_servers(cli, racker_token)
             pprint(servers)
             server_choice = raw_input("Which Server > ")
@@ -188,16 +193,22 @@ def cli():
 
     if len(cli.split(' ')) ==3:
         command,arg_one,arg_two = cli.split()
-        if cli.isdigit():
+        print(arg_two)
+        if cli.isdigit() or re.match("^https", arg_two):
             if no_auth == 1:
                 racker_token =0
             else:
                 racker_token = get_racker_token(config)
+            if re.match("^https",cli):
+                thesplit = cli.split('/')
+                cli = thesplit[4]
+                print(cli)
+                
             get_ng_servers(cli, racker_token)
             pprint(servers)
-            #server_choice = raw_input("Which Server > ")
-            #bastion = raw_input("Bastion> ")
-            ssh_expect_bast_through(username, arg_one, int(arg_two),racker_token)
+            server_choice = raw_input("Which Server > ")
+            bastion = raw_input("Bastion> ")
+            ssh_expect_bast_through(username, bastion, int(server_choice),racker_token)
             
  
 
@@ -489,15 +500,36 @@ if arg_count == 2:
         rando = random.randint(1, 3)
     if command == "extra":
         rash_p = config["default"][0]["prompt"]
-    if command.isdigit():
+
+    if command.isdigit() or re.match("^https", command):
         if no_auth == 1:
             racker_token =0
         else:
             racker_token = get_racker_token(config)
+        if re.match("^https",command):
+            thesplit = command.split('/')
+            command = thesplit[4]
+            print(command)
+                
         get_ng_servers(command, racker_token)
         pprint(servers)
         server_choice = raw_input("Which Server > ")
-        ssh_expect(int(server_choice),racker_token)
+        bastion = raw_input("Bastion> ")
+        ssh_expect_bast_through(username, bastion, int(server_choice),racker_token)
+                   
+        
+        
+        
+        
+#        if command.isdigit():
+#        if no_auth == 1:
+#            racker_token =0
+#        else:
+#            racker_token = get_racker_token(config)
+#        get_ng_servers(command, racker_token)
+#        pprint(servers)
+#        server_choice = raw_input("Which Server > ")
+#        ssh_expect(int(server_choice),racker_token)
     if command == "mytoken":
         racker_token = get_racker_token(config)
         print(racker_token)

@@ -1,4 +1,4 @@
-Converting arguement parsing, to argparse. --Branch argparse
+Converting arguement parsing, to ~~argparse~~ ~~getopt~~ ~~custom arg parsing~~ ok ok argparse. --Branch argparse*
 --Convert the ipfinder to the new naming convention, currently gipinfo.
 Eliminate the current global variables in use: servers, databases, maybe not tokens
 Add other bastions
@@ -15,3 +15,20 @@ work on except script, so that it produces sudo su - and so it can better handle
 tab completion
 
 parse https as <ddi>
+
+
+
+
+
+*Simple argparse for reference:
+```
+import argparse
+
+parser = argparse.ArgumentParser()
+    parser.add_argument("a")
+    args = parser.parse_args()
+
+    if args.a == 'magic.name':
+        print 'You nailed it!'
+        
+```
