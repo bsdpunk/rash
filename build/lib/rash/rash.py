@@ -216,6 +216,13 @@ def cli():
             print("Unrecoginized Command")
 
 def get_rack_id(uuid,token):
+    if re.match('(\d+|\d)\.(\d+|\d)\.(\d+|\d)\.(\d+|\d)', uuid):
+        json_ip = get_ip_info(uuid, token)
+        get_uuid=json.loads(json_ip)
+        #print(get_uuid)
+        #print(get_uuid['device'])
+        #bye()
+        uuid = get_uuid['device']
     headers = {'content-type': 'application/json',"X-Auth-Token":token}
     second_r = requests.get("https://passwords.servermill.rackspace.net/v1/"+uuid+"/password/current", headers=headers)
     rack_pass=second_r.text
@@ -517,10 +524,6 @@ if arg_count == 2:
         bastion = raw_input("Bastion> ")
         ssh_expect_bast_through(username, bastion, int(server_choice),racker_token)
                    
-        
-        
-        
-        
 #        if command.isdigit():
 #        if no_auth == 1:
 #            racker_token =0
