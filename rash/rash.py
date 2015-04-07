@@ -69,6 +69,13 @@ else:
 def Exit_gracefully(signal, frame):
     sys.exit(0)
 
+def sanitize(func_type, arguement):
+    if func_type == "get-ip-info":
+        if re.match('(\d+|\d)\.(\d+|\d)\.(\d+|\d)\.(\d+|\d)', arguement):
+            return(True)
+        else:
+            return(False)
+    
 
 def get_racker_token(config):
     signal.signal(signal.SIGINT, Exit_gracefully)
@@ -131,11 +138,15 @@ def cli():
                 #pprint(servers)
                 valid = 1 
             if command == "get-ip-info":
-                pprint(get_ip_info(arguement, racker_token))
+                if sanitize("get-ip-info", arguement):
+                    pprint(get_ip_info(arguement, racker_token))
+                else:
+                    print("This does not appear to be a valid IP address: get-ip-info 10.0.0.1")
                 valid = 1 
             if command == "get-ng-servers":
                 get_ng_servers(arguement, racker_token)
-                pprint(servers)
+                if len(servers) > 0:
+                    pprint(servers)
                 valid = 1 
             if command == "get-databases" or command == "gdbin":
                 get_databases(arguement, racker_token)
@@ -223,6 +234,7 @@ def get_rack_id(uuid,token):
         #print(get_uuid['device'])
         #bye()
         uuid = get_uuid['device']
+#    elif
     headers = {'content-type': 'application/json',"X-Auth-Token":token}
     second_r = requests.get("https://passwords.servermill.rackspace.net/v1/"+uuid+"/password/current", headers=headers)
     rack_pass=second_r.text
@@ -235,7 +247,6 @@ def get_ip_info(ip,token):
     second_r = requests.get("https://ipfinder.rackspace.com/json/"+ip, headers=headers, verify=False)
     ip_info=second_r.text
     return(ip_info)
-
 
 
 
@@ -348,6 +359,11 @@ def gservers(ddi, token):
 
 
 def get_ng_servers(ddi, token):
+    if ddi.isdigit():
+        true_digit =1
+    else:
+        print("This does not appear to be a ddi")
+        return
     datacenters = ['hkg', 'lon', 'iad', 'ord', 'syd', 'dfw']
     admin_user = get_user(ddi,token)
     if admin_user == None:
@@ -555,7 +571,10 @@ if arg_count == 3:
     command = sys.argv[1]
     arguement = sys.argv[2]
     if command == "get-ip-info":
-        pprint(get_ip_info(arguement, racker_token))
+        if sanitize("get-ip-info", arguement):
+            pprint(get_ip_info(arguement, racker_token))
+        else:
+            print("This does not appear to be a valid IP address: get-ip-info 10.0.0.1")
         valid = 1
     if command == "get-rack-id":
         print(get_rack_id(arguement, racker_token))
