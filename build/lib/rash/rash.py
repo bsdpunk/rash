@@ -84,6 +84,12 @@ def sanitize(func_type, inputs):
         else:
             return(False)
 
+    if func_type == "get-user":
+            if inputs.isdigit():
+                return(True)
+            else:
+                return(False)
+
 def get_racker_token(config):
     signal.signal(signal.SIGINT, Exit_gracefully)
     global username
@@ -140,9 +146,9 @@ def cli():
                 global tokens
                 tokens.update(temp_dict)
                 valid = 1
-            if command == "gservers":
-                print(gservers(arguement, racker_token))
-                valid = 1
+#            if command == "gservers":
+#                print(gservers(arguement, racker_token))
+#                valid = 1
             if command == "goldservers" or command == "gold":
                 goldservers(arguement, racker_token)
                 #pprint(servers)
@@ -162,9 +168,12 @@ def cli():
                 get_databases(arguement, racker_token)
                 pprint(databases)
                 valid = 1 
-            if command == "get-user":        
-                print(get_user(arguement, racker_token))
-                valid = 1
+            if command == "get-user":
+                if sanitize("get-user", arguement):
+                    print(get_user(arguement, racker_token))
+                    valid = 1
+                else:
+                    print("This does not appear to be a valid ddi: get-user 922996")
             if command == "prompt-imp":
                 imp_prompt(arguement, tokens[arguement])
                 valid = 1
@@ -595,9 +604,9 @@ if arg_count == 3:
     if command == "get-imp-token":
         print(get_imp_token(arguement, racker_token))
         valid = 1
-    if command == "gservers":
-        print(gservers(arguement, racker_token))
-        valid = 1
+#    if command == "gservers":
+#        print(gservers(arguement, racker_token))
+#        valid = 1
     if command == "get-ng-servers":
         get_ng_servers(arguement, racker_token)
         pprint(servers)
@@ -607,8 +616,11 @@ if arg_count == 3:
         pprint(databases)
         valid = 1 
     if command == "get-user":
-        print(get_user(arguement, racker_token))
-        valid = 1
+        if sanitize("get-user", arguement):
+            print(get_user(arguement, racker_token))
+            valid = 1
+        else:
+            print("This does not appear to be a valid ddi: get-user 922996")
     if command == "mytoken":
         print(racker_token)
         valid = 1
