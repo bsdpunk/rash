@@ -69,13 +69,20 @@ else:
 def Exit_gracefully(signal, frame):
     sys.exit(0)
 
-def sanitize(func_type, arguement):
+def sanitize(func_type, inputs):
+    ipp =re.compile('(\d+|\d)\.(\d+|\d)\.(\d+|\d)\.(\d+|\d)')
+    uuidp = re.compile(".{8}-.{4}-.{4}-.{4}-.{12}")
     if func_type == "get-ip-info":
-        if re.match('(\d+|\d)\.(\d+|\d)\.(\d+|\d)\.(\d+|\d)', arguement):
+        if re.match(ipp, inputs):
             return(True)
         else:
             return(False)
-    
+        
+    if func_type == "get-rack-id":
+        if re.match(uuidp, inputs) or re.match(ipp, inputs):
+            return(True)
+        else:
+            return(False)
 
 def get_racker_token(config):
     signal.signal(signal.SIGINT, Exit_gracefully)
@@ -121,8 +128,11 @@ def cli():
         if len(cli.split(' ')) ==2:
             command,arguement = cli.split()
             if command == "get-rack-id":
-                print(get_rack_id(arguement, racker_token))
-                valid = 1
+                if sanitize('get-rack-id', arguement):
+                    print(get_rack_id(arguement, racker_token))
+                    valid = 1
+                else:
+                    print("This does not appear to be a valid uuid or ip: get-rack-id 10.0.0.1 or get-rack-id 7d9a2738-1594-4461-8cd2-5d0e76625473")
             if command == "get-imp-token":
                 new_token = get_imp_token(arguement, racker_token)
                 temp_dict = {arguement:new_token}
@@ -577,8 +587,11 @@ if arg_count == 3:
             print("This does not appear to be a valid IP address: get-ip-info 10.0.0.1")
         valid = 1
     if command == "get-rack-id":
-        print(get_rack_id(arguement, racker_token))
-        valid = 1
+        if sanitize('get-rack-id', arguement):
+            print(get_rack_id(arguement, racker_token))
+            valid = 1
+        else:
+            print("This does not appear to be a valid uuid or ip: get-rack-id 10.0.0.1 or get-rack-id 7d9a2738-1594-4461-8cd2-5d0e76625473")
     if command == "get-imp-token":
         print(get_imp_token(arguement, racker_token))
         valid = 1

@@ -1,8 +1,8 @@
-Proactively sanitize input
+2Proactively sanitize input
 
-MOVE sanitation to a seperate function
+2MOVE sanitation to a seperate function
 
-Sanatize selector?
+2Sanatize selector?
 
 Test get-ip-info, test get-ng-servers
 
@@ -12,11 +12,11 @@ Converting arguement parsing, to ~~argparse~~ ~~getopt~~ ~~custom arg parsing~~ 
 
 Eliminate the current global variables in use: servers, databases, maybe not tokens
 
-Add other bastions
+3Add other bastions
 
 port number selection for ssh
 
-reduce number of api calls by, only checking lon for lon and taking lon out of us (rash really needs this. the speed bump will help)
+1reduce number of api calls by, only checking lon for lon and taking lon out of us (rash really needs this. the speed bump will help)
 
 test get-databases
 
@@ -32,13 +32,13 @@ for servers in ng_servers print server int, name ,and ip
 
 Add EOF for <ddi>
 
-Clean up so text for "rash <ddi>" and "rash> <ddi>" show a more user friendly selection
+4Clean up so text for "rash <ddi>" and "rash> <ddi>" show a more user friendly selection
 
-work on except script, so that it produces sudo su - and so it can better handle errors and bad connections
+5work on except script, so that it produces sudo su - and so it can better handle errors and bad connections
 
 tab completion
 
-parse https as <ddi>
+--parse https as <ddi>
 
 
 
