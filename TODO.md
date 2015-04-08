@@ -2,7 +2,7 @@
 
 2MOVE sanitation to a seperate function
 
-2Sanatize selector?
+2Sanitize selector?
 
 Test get-ip-info, test get-ng-servers
 

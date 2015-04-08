@@ -140,9 +140,9 @@ def cli():
                 global tokens
                 tokens.update(temp_dict)
                 valid = 1
-            if command == "gservers":
-                print(gservers(arguement, racker_token))
-                valid = 1
+#            if command == "gservers":
+#                print(gservers(arguement, racker_token))
+#                valid = 1
             if command == "goldservers" or command == "gold":
                 goldservers(arguement, racker_token)
                 #pprint(servers)
