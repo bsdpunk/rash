@@ -139,3 +139,24 @@ def ssh_through_bastion(user, bastion, pub_ip, password):
 
 
     subprocess.call(script_path)
+
+#This verifies that the input is valid, and then assigns a domain name to the bastion
+
+def bastion_check(bastion):
+
+    if bastion == "dfw":
+        bastion = "cbast1.dfw1.corp.rackspace.com"
+    elif bastion == "lon":
+        bastion = "cbast.lon1.rackspace.com"
+    elif bastion == "lon3":
+        bastion = "cbast.lon3.rackspace.com"
+    elif bastion == "hkg":
+        bastion = "cbast.hkg1.rackspace.com"
+    elif bastion == "syd":
+        bastion = "cbast.syd2.rackspace.com"
+    else:
+        bastion = False
+    
+    return(bastion)
+
+  

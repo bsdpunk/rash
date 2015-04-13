@@ -14,7 +14,7 @@ Converting arguement parsing, to ~~argparse~~ ~~getopt~~ ~~custom arg parsing~~ 
 
 Eliminate the current global variables in use: servers, all the ddb stuff, databases, maybe not tokens
 
-3Add other bastions
+--3Add other bastions
 
 port number selection for ssh
 
@@ -26,7 +26,7 @@ fix egg error
 
 get imp-token subshell properly working
 
-Don't break on unicode named servers
+Don't break on unicode named servers, might be this account 10044463
 
 --get-rack-id to work with ip
 

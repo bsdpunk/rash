@@ -213,12 +213,16 @@ def cli():
                 thesplit = cli.split('/')
                 cli = thesplit[4]
                 print(cli)
-
+            
             get_ng_servers(cli, racker_token)
             pprint(ddi_bast)
             ddb_choice = raw_input("Which Server > ")
             bastion = raw_input("Bastion> ")
-            ssh_expect_bast_through(username, bastion, int(ddb_choice),racker_token)
+            bastion = ssh_script.bastion_check(bastion)
+            if bastion == False:
+                print("bad bastion id, use lon, dfw, lon3, hkg, iad, or syd")
+            else:
+                ssh_expect_bast_through(username, bastion, int(ddb_choice),racker_token)
         	
             #        if len(cli.split(' ')) ==2:
 
@@ -319,11 +323,11 @@ def ssh_expect_bast_through(user, bastion, server_number, token):
         ip = servers[int(server_number)]['ip']
 #       username = 'rack'
         password = rack_pass
-        #print(password) 
-        if bastion == "dfw":
-            bastion = "cbast1.dfw1.corp.rackspace.com"
-        elif bastion == "lon":
-            bastion = "cbast.lon1.rackspace.com"
+#        #print(password) 
+#        if bastion == "dfw":
+#            bastion = "cbast1.dfw1.corp.rackspace.com"
+#        elif bastion == "lon":
+#            bastion = "cbast.lon1.rackspace.com"
             
         ssh_script.ssh_through_bastion(user, bastion, ip, password)
         return ssh_line
@@ -567,17 +571,15 @@ if arg_count == 2:
         pprint(ddi_bast)
         ddb_choice = raw_input("Which Server> ")
         bastion = raw_input("Bastion> ")
-        ssh_expect_bast_through(username, bastion, int(ddb_choice),racker_token)
+        bastion = ssh_script.bastion_check(bastion)
+        #print(bastion)
+        if bastion == False:
+            print("bad bastion id, use lon, dfw, lon3, hkg, iad, or syd")
+            bye()
+        else:
+            ssh_expect_bast_through(username, bastion, int(ddb_choice),racker_token)
                    
-#        if command.isdigit():
-#        if no_auth == 1:
-#            racker_token =0
-#        else:
-#            racker_token = get_racker_token(config)
-#        get_ng_servers(command, racker_token)
-#        pprint(servers)
-#        server_choice = raw_input("Which Server > ")
-#        ssh_expect(int(server_choice),racker_token)
+
     if command == "mytoken":
         racker_token = get_racker_token(config)
         print(racker_token)
