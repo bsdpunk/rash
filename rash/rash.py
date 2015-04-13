@@ -131,6 +131,9 @@ def cli():
             racker_token = get_racker_token(config)
 #This is not just a horrible way to take the commands and arguements, it's also shitty way to sanatize the input for one specific scenario
 #I miss perl :(
+
+
+#Apparently argparse is the solution I'm looking for,I put a simple argparse example in TODO.md        
         cli = re.sub('  ',' ', cli.rstrip())
         if len(cli.split(' ')) ==2:
             command,arguement = cli.split()
@@ -147,12 +150,8 @@ def cli():
                 global tokens
                 tokens.update(temp_dict)
                 valid = 1
-#            if command == "gservers":
-#                print(gservers(arguement, racker_token))
-#                valid = 1
             if command == "goldservers" or command == "gold":
                 goldservers(arguement, racker_token)
-                #pprint(servers)
                 valid = 1 
             if command == "get-ip-info":
                 if sanitize("get-ip-info", arguement):
@@ -181,8 +180,10 @@ def cli():
             if command == "ssh":
                 print(ssh_expect(arguement, racker_token))
                 valid = 1
-  	
-	
+##########################################################################################
+# This starts the single rash commands
+#######################################################################################
+
         if cli == "servers":
             pprint(servers)
             valid = 1
@@ -224,7 +225,10 @@ def cli():
             else:
                 ssh_expect_bast_through(username, bastion, int(ddb_choice),racker_token)
         	
-            #        if len(cli.split(' ')) ==2:
+   #####################
+    # This is the ssh through bastion bit that, creates an expect script to connect and passes you
+    # to the script
+    ##################
 
     if len(cli.split(' ')) ==3:
         command,arg_one,arg_two = cli.split()
@@ -254,11 +258,8 @@ def get_rack_id(uuid,token):
     if re.match('(\d+|\d)\.(\d+|\d)\.(\d+|\d)\.(\d+|\d)', uuid):
         json_ip = get_ip_info(uuid, token)
         get_uuid=json.loads(json_ip)
-        #print(get_uuid)
-        #print(get_uuid['device'])
-        #bye()
         uuid = get_uuid['device']
-#    elif
+
     headers = {'content-type': 'application/json',"X-Auth-Token":token}
     second_r = requests.get("https://passwords.servermill.rackspace.net/v1/"+uuid+"/password/current", headers=headers)
     rack_pass=second_r.text
@@ -304,10 +305,11 @@ def ssh_expect(server_number, token):
         return ssh_line
     else: 
         print("This is not a valid option")
-###This needs to verify that it's an ipv4 address, via JSON not regex...I implimented this a different way somewhere else need to swap it out...maybe an old version lost due to careless version contorl....hmmmm 
-###I was just going to throw this to a shell with pexpect, but I'm fucking tired, maybe tomorrow 
-###############################################################################################################################
 
+#        
+#This is an actual working expect script creator        
+#It logs you into the bastion then the server you choose        
+#        
 def ssh_expect_bast_through(user, bastion, server_number, token):
     global servers
     #print(server_number)
@@ -321,20 +323,15 @@ def ssh_expect_bast_through(user, bastion, server_number, token):
         ssh_line = "ssh rack@"+servers[int(server_number)]['ip']+"    "+rack_pass[1:-1]
         
         ip = servers[int(server_number)]['ip']
-#       username = 'rack'
         password = rack_pass
-#        #print(password) 
-#        if bastion == "dfw":
-#            bastion = "cbast1.dfw1.corp.rackspace.com"
-#        elif bastion == "lon":
-#            bastion = "cbast.lon1.rackspace.com"
-            
+           
         ssh_script.ssh_through_bastion(user, bastion, ip, password)
         return ssh_line
     else: 
         print("This is not a valid option")
 
 
+#I'm pretty sure this is defunct, just afraid to remove it yet
 def ssh_expect_b(user, bastion):
     #global servers
     #print(server_number)
@@ -380,7 +377,8 @@ def gservers(ddi, token):
                     print(server_json["servers"][i]["id"])
     return(second_r.text)
 #############################################################################################################################
-
+#This is the main get server function, it's used by itself and in the ssh functions
+#########################################################
 
 def get_ng_servers(ddi, token):
     if ddi.isdigit():
@@ -404,7 +402,7 @@ def get_ng_servers(ddi, token):
             if server_json["servers"]:
                 size = len(server_json["servers"])
                 #print(size)
-
+                #The ddb stuff is for a fresh list every time, used with: rash <ddi>
                 ddb_count = 0
                 for i in range(size):
                     global servers
@@ -417,8 +415,6 @@ def get_ng_servers(ddi, token):
                     if second_r.text:
                         details = json.loads(second_r.text)
                         #print(details)
-#Probably should add the fucking type of server, dolt
-#Probably should add a lot of things, need input from others
                         size_ip = len(details["server"]["addresses"]["public"])
                         #print(size_ip)
                         for ip in range(size_ip):
@@ -435,12 +431,15 @@ def get_ng_servers(ddi, token):
                         else:
                             print("A server did not report an IPv4 address")
                             print(details["server"])
+                    else:
+                        print("no details")
+                        details= ""
     return(details)
 #########################
 
 
 ############################Standard Servers, old servers whatever############
-
+#A function that will probably never be finished / implimented
 def goldservers(ddi, token):
     datacenters = ['hkg', 'lon', 'iad', 'ord', 'syd', 'dfw']
     admin_user = get_user(ddi,token)
@@ -543,6 +542,10 @@ def bye():
 
 #for item in args.add:
 #    add(item)
+
+#if it's rash and another command
+#ie rash ddi, rash history, rash extra
+#
 
 if arg_count == 2:
     command = sys.argv[1]

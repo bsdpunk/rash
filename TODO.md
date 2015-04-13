@@ -3,6 +3,7 @@
 2MOVE sanitation to a seperate function
 
 2Sanitize selector?
+    sanatize Server Select
 
 Sanatize input for through_bast
 
@@ -37,6 +38,7 @@ for servers in ng_servers print server int, name ,and ip
 Add EOF for <ddi>
 
 4Clean up so text for "rash <ddi>" and "rash> <ddi>" show a more user friendly selection
+    Change out of JSON
 
 5work on except script, so that it produces sudo su - and so it can better handle errors and bad connections
 
