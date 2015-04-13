@@ -16,7 +16,6 @@ A .rash will be made in your home directory that will hold your credentials.
 
 ```
 { "default":[{ "username":"yourusername", "password":"yourpassword" }] } 
-In the future rash will support the creation of this file as well as, a passwordless version. 
 ```
 
 Commands:

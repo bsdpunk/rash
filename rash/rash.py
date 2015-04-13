@@ -25,6 +25,7 @@ arg_count = 0
 no_auth = 0
 server_count = 0
 database_count = 0
+ddb_count = 0
 hist_toggle = 0
 prompt_r = 0
 arg_list = ['get-ip-info', 'get-rack-id','get-ng-servers','get-user', 'get-imp-token', 'prompt-imp', 'get-databases']
@@ -42,7 +43,7 @@ tokens = {}
 servers = {}
 databases = {}
 username = ''
-
+ddi_bast = {}
 
 
 
@@ -214,10 +215,10 @@ def cli():
                 print(cli)
 
             get_ng_servers(cli, racker_token)
-            pprint(servers)
-            server_choice = raw_input("Which Server > ")
+            pprint(ddi_bast)
+            ddb_choice = raw_input("Which Server > ")
             bastion = raw_input("Bastion> ")
-            ssh_expect_bast_through(username, bastion, int(server_choice),racker_token)
+            ssh_expect_bast_through(username, bastion, int(ddb_choice),racker_token)
         	
             #        if len(cli.split(' ')) ==2:
 
@@ -235,10 +236,10 @@ def cli():
                 print(cli)
                 
             get_ng_servers(cli, racker_token)
-            pprint(servers)
-            server_choice = raw_input("Which Server > ")
+            pprint(ddi_bast)
+            ddb_choice = raw_input("Which Server > ")
             bastion = raw_input("Bastion> ")
-            ssh_expect_bast_through(username, bastion, int(server_choice),racker_token)
+            ssh_expect_bast_through(username, bastion, int(ddb_choice),racker_token)
             
  
 
@@ -382,8 +383,11 @@ def get_ng_servers(ddi, token):
         true_digit =1
     else:
         print("This does not appear to be a ddi")
-        return
-    datacenters = ['hkg', 'lon', 'iad', 'ord', 'syd', 'dfw']
+        return     
+    if re.match('^100', ddi):
+        datacenters = ['lon']
+    else:
+        datacenters = ['hkg', 'lon', 'iad', 'ord', 'syd', 'dfw']
     admin_user = get_user(ddi,token)
     if admin_user == None:
         return(admin_user)
@@ -396,9 +400,13 @@ def get_ng_servers(ddi, token):
             if server_json["servers"]:
                 size = len(server_json["servers"])
                 #print(size)
+
+                ddb_count = 0
                 for i in range(size):
                     global servers
+                    global ddi_bast
                     global server_count
+                    ddb_count += 1
                     server_count += 1
                     second_r = requests.get("https://"+dc+".servers.api.rackspacecloud.com/v2/"+ddi+"/servers/"+server_json["servers"][i]["id"], headers=headers, verify=False)
                     #print(server_json)
@@ -417,7 +425,9 @@ def get_ng_servers(ddi, token):
                         
                         if pub_ip:         
                             id_name ={server_count: {'admin':admin_user,'ddi':ddi,'id':str(server_json["servers"][i]["id"]), 'name':str(server_json["servers"][i]["name"]), 'ip':str(pub_ip)}}
+                            ddb ={ddb_count: {'name':str(server_json["servers"][i]["name"]), 'ip':str(pub_ip)}}
                             servers.update(id_name)
+                            ddi_bast.update(ddb)
                         else:
                             print("A server did not report an IPv4 address")
                             print(details["server"])
@@ -554,10 +564,10 @@ if arg_count == 2:
             print(command)
                 
         get_ng_servers(command, racker_token)
-        pprint(servers)
-        server_choice = raw_input("Which Server > ")
+        pprint(ddi_bast)
+        ddb_choice = raw_input("Which Server> ")
         bastion = raw_input("Bastion> ")
-        ssh_expect_bast_through(username, bastion, int(server_choice),racker_token)
+        ssh_expect_bast_through(username, bastion, int(ddb_choice),racker_token)
                    
 #        if command.isdigit():
 #        if no_auth == 1:
@@ -641,9 +651,9 @@ if arg_count == 4:
         else:
             racker_token = get_racker_token(config)
         get_ng_servers(command, racker_token)
-        pprint(servers)
+        pprint(ddb_bast)
         #server_choice = raw_input("Server number> ")
         #bastion = raw_input("Bastion> ")
-        ssh_expect_bast_through(username, bastion, int(server_choice),racker_token)
+        ssh_expect_bast_through(username, bastion, int(ddb_choice),racker_token)
 
 ########################################################################################

@@ -10,13 +10,13 @@ Converting arguement parsing, to ~~argparse~~ ~~getopt~~ ~~custom arg parsing~~ 
 
 --Convert the ipfinder to the new naming convention, currently gipinfo.
 
-Eliminate the current global variables in use: servers, databases, maybe not tokens
+Eliminate the current global variables in use: servers, all the ddb stuff, databases, maybe not tokens
 
 3Add other bastions
 
 port number selection for ssh
 
-1reduce number of api calls by, only checking lon for lon and taking lon out of us (rash really needs this. the speed bump will help)
+--1reduce number of api calls by, only checking lon for lon and taking lon out of us (rash really needs this. the speed bump will help)
 
 test get-databases
 
