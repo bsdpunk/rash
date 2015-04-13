@@ -4,6 +4,8 @@
 
 2Sanitize selector?
 
+Sanatize input for through_bast
+
 Test get-ip-info, test get-ng-servers
 
 Converting arguement parsing, to ~~argparse~~ ~~getopt~~ ~~custom arg parsing~~ ok ok argparse. --Branch argparse*
@@ -19,6 +21,8 @@ port number selection for ssh
 --1reduce number of api calls by, only checking lon for lon and taking lon out of us (rash really needs this. the speed bump will help)
 
 test get-databases
+
+fix egg error
 
 get imp-token subshell properly working
 
