@@ -42,7 +42,7 @@ Add EOF for <ddi>
 
 5work on except script, so that it produces sudo su - and so it can better handle errors and bad connections
 
-tab completion
+--tab completion
 
 --parse https as <ddi>
 

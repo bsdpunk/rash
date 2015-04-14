@@ -19,6 +19,8 @@ import argparse
 import pkg_resources
 #from pexpect import *
 #Counters and Toggles
+import readline
+
 
 version = pkg_resources.require("rash")[0].version
 arg_count = 0
@@ -28,7 +30,7 @@ database_count = 0
 ddb_count = 0
 hist_toggle = 0
 prompt_r = 0
-arg_list = ['get-ip-info', 'get-rack-id','get-ng-servers','get-user', 'get-imp-token', 'prompt-imp', 'get-databases']
+COMMANDS = ['get-ip-info', 'get-rack-id','get-ng-servers','get-user', 'get-imp-token', 'prompt-imp', 'get-databases']
 for arg in sys.argv:
     arg_count += 1
 
@@ -46,6 +48,18 @@ username = ''
 ddi_bast = {}
 
 
+def complete(text, state):
+    #while not state:
+        for cmd in COMMANDS:
+            #while not state:
+                if cmd.startswith(text):
+                    if not state:
+                        return cmd
+                    else:
+                        state -= 1
+
+#readline.parse_and_bind("tab: complete")
+#readline.set_completer(complete)
 
 #os expand must be used for 
 config_file = os.path.expanduser('~/.rash')
@@ -70,6 +84,9 @@ else:
 def Exit_gracefully(signal, frame):
     sys.exit(0)
 
+
+#Sanitize this shit
+
 def sanitize(func_type, inputs):
     ipp =re.compile('(\d+|\d)\.(\d+|\d)\.(\d+|\d)\.(\d+|\d)')
     uuidp = re.compile(".{8}-.{4}-.{4}-.{4}-.{12}")
@@ -91,6 +108,7 @@ def sanitize(func_type, inputs):
             else:
                 return(False)
 
+#DUH
 def get_racker_token(config):
     signal.signal(signal.SIGINT, Exit_gracefully)
     global username
@@ -111,7 +129,7 @@ def get_racker_token(config):
 
 rash_p = 'rash'
 
-
+#main command line stuff
 def cli():
     while True:
         valid = 0
@@ -120,6 +138,9 @@ def cli():
 #        except EOFError:
 #            bye()
         try:
+            readline.parse_and_bind("tab: complete")
+            readline.set_completer(complete)
+            readline.set_completer_delims(' ')
             cli = str(raw_input(PROMPT))
         except EOFError:
             bye()
@@ -129,7 +150,9 @@ def cli():
             pass
         else:
             racker_token = get_racker_token(config)
+
 #This is not just a horrible way to take the commands and arguements, it's also shitty way to sanatize the input for one specific scenario
+
 #I miss perl :(
 
 
@@ -389,7 +412,7 @@ def get_ng_servers(ddi, token):
     if re.match('^100', ddi):
         datacenters = ['lon']
     else:
-        datacenters = ['hkg', 'lon', 'iad', 'ord', 'syd', 'dfw']
+        datacenters = ['hkg', 'iad', 'ord', 'syd', 'dfw']
     admin_user = get_user(ddi,token)
     if admin_user == None:
         return(admin_user)
@@ -492,11 +515,16 @@ def get_imp_token(user_id,token):
     json_return = json.loads(second_r.text)
     return json_return["access"]["token"]["id"]
 
+
+#I'm pretty sure we don't have the perms for this one
+
 def gtenant(token):
     headers = {'content-type': 'application/json',"X-Auth-Token":token}
     second_r = requests.get("https://identity.api.rackspacecloud.com/v2.0/tenants", headers=headers, verify=False)
     return(second_r.text)
 
+
+#This is supposed to drop you in an impersonation shell, it does not currently do that correctly    
 def imp_prompt(ident,token):
 	ident_p = ident + "> "
 	imp_prompt = str(raw_input(ident_p))   
