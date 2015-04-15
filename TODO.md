@@ -27,7 +27,9 @@ fix egg error
 
 get imp-token subshell properly working
 
-Don't break on unicode named servers, might be this account 10044463
+Special rules for rack connect, try this account 10043249
+
+--Don't break on unicode named servers, might be this account 10044463
 
 --get-rack-id to work with ip
 
