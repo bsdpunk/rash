@@ -20,7 +20,8 @@ import pkg_resources
 #from pexpect import *
 #Counters and Toggles
 import readline
-
+import codecs
+import unicodedata
 
 version = pkg_resources.require("rash")[0].version
 arg_count = 0
@@ -301,7 +302,12 @@ def get_ip_info(ip,token):
 def get_user(tenant_id,token):
     headers = {'content-type': 'application/json',"X-Auth-Token":token}
     second_r = requests.get("https://customer-admin.prod.dfw1.us.ci.rackspace.net/v3/customer_accounts/CLOUD/"+tenant_id+"/contacts?role=PRIMARY", headers=headers, verify=False)
-    root = ET.fromstring(second_r.text)#ET.parse(second_r)
+    content = second_r.text
+    content = unicodedata.normalize('NFKD', content).encode('ascii','ignore')
+#    content = content.decode('utf-8')
+#content = unicode(content.strip(codecs.BOM_UTF8), 'utf-8')
+    #content.encode('ascii', 'ignore')
+    root = ET.fromstring(content)#ET.parse(second_r)
     for child in root.findall('{http://customer.api.rackspace.com/v1}contact'):
         usersname = child.get('username')
         return usersname
