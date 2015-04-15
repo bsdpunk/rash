@@ -78,12 +78,17 @@ def ssh_bastion(user, bastion):
 
 
 def ssh_through_bastion(user, bastion, pub_ip, password):
-
+    #And here is where you can tell I used to be a perl programmer
+    p = re.compile('\$')
+    password = p.sub('\044', password)
+    print(password)
     output = []
 
     output.append('#!/usr/bin/env expect\n')
     print(user)
     print(bastion)
+    output.append("set password {"+password+"}\n")
+    output.append("send_user $password\n")
     #loginInfo['admin_password'] = re.escape(loginInfo['admin_password'])
     output.append('spawn -noecho ssh -l '+ user + ' -o StrictHostKeyChecking=no' 
         ' -o CheckHostIP=no -o UserKnownHostsFile=/dev/null '+ bastion +'\n')
@@ -114,7 +119,7 @@ def ssh_through_bastion(user, bastion, pub_ip, password):
     output.append('\t\t\t-re {[P|p]assword:} {\n')
     output.append('\t\t\t\tsleep .1\n')
  
-    output.append('\t\t\t\tsend -- "'+ password +'\\r"\r\n')
+    output.append("\t\t\t\tsend -- $password\\r\r\n")
     output.append('\t\t\t\tsleep .1\n')
     output.append('\t\t\t}\n')
     output.append('\t\t\t}\n')
