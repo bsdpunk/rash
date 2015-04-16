@@ -31,7 +31,7 @@ database_count = 0
 ddb_count = 0
 hist_toggle = 0
 prompt_r = 0
-COMMANDS = ['get-ip-info', 'get-rack-id','get-ng-servers','get-user', 'get-imp-token', 'prompt-imp', 'get-databases']
+COMMANDS = ['get-ip-info', 'get-rack-pass','get-ng-servers','get-user', 'get-imp-token', 'prompt-imp', 'get-databases']
 for arg in sys.argv:
     arg_count += 1
 
@@ -97,7 +97,7 @@ def sanitize(func_type, inputs):
         else:
             return(False)
         
-    if func_type == "get-rack-id":
+    if func_type == "get-rack-pass":
         if re.match(uuidp, inputs) or re.match(ipp, inputs):
             return(True)
         else:
@@ -161,12 +161,12 @@ def cli():
         cli = re.sub('  ',' ', cli.rstrip())
         if len(cli.split(' ')) ==2:
             command,arguement = cli.split()
-            if command == "get-rack-id":
-                if sanitize('get-rack-id', arguement):
-                    print(get_rack_id(arguement, racker_token))
+            if command == "get-rack-pass":
+                if sanitize('get-rack-pass', arguement):
+                    print(get_rack_pass(arguement, racker_token))
                     valid = 1
                 else:
-                    print("This does not appear to be a valid uuid or ip: get-rack-id 10.0.0.1 or get-rack-id 7d9a2738-1594-4461-8cd2-5d0e76625473")
+                    print("This does not appear to be a valid uuid or ip: get-rack-pass 10.0.0.1 or get-rack-pass 7d9a2738-1594-4461-8cd2-5d0e76625473")
             if command == "get-imp-token":
                 new_token = get_imp_token(arguement, racker_token)
                 temp_dict = {arguement:new_token}
@@ -278,7 +278,7 @@ def cli():
         if valid == 0:
             print("Unrecoginized Command")
 
-def get_rack_id(uuid,token):
+def get_rack_pass(uuid,token):
     if re.match('(\d+|\d)\.(\d+|\d)\.(\d+|\d)\.(\d+|\d)', uuid):
         json_ip = get_ip_info(uuid, token)
         get_uuid=json.loads(json_ip)
@@ -323,7 +323,7 @@ def ssh_expect(server_number, token):
     except ValueError:
         pass
     if isinstance( server_number, (int) ) and server_count >= server_number:
-        rack_pass = get_rack_id(servers[int(server_number)]['id'],token)
+        rack_pass = get_rack_pass(servers[int(server_number)]['id'],token)
         ssh_line = "ssh rack@"+servers[int(server_number)]['ip']+"    "+rack_pass[1:-1]
         
         ip = servers[int(server_number)]['ip']
@@ -348,7 +348,7 @@ def ssh_expect_bast_through(user, bastion, server_number, token):
     except ValueError:
         pass
     if isinstance( server_number, (int) ) and server_count >= server_number:
-        rack_pass = get_rack_id(servers[int(server_number)]['id'],token)
+        rack_pass = get_rack_pass(servers[int(server_number)]['id'],token)
         ssh_line = "ssh rack@"+servers[int(server_number)]['ip']+"    "+rack_pass[1:-1]
         
         ip = servers[int(server_number)]['ip']
@@ -370,7 +370,7 @@ def ssh_expect_b(user, bastion):
     #except ValueError:
     #    pass
     #if isinstance( server_number, (int) ) and server_count >= server_number:
-    #    rack_pass = get_rack_id(servers[int(server_number)]['id'],token)
+    #    rack_pass = get_rack_pass(servers[int(server_number)]['id'],token)
     #    ssh_line = "ssh rack@"+servers[int(server_number)]['ip']+"    "+rack_pass[1:-1]
         
     #    ip = servers[int(server_number)]['ip']
@@ -519,6 +519,7 @@ def get_imp_token(user_id,token):
     headers = {'content-type': 'application/json',"X-Auth-Token":token}
     second_r = requests.post("https://identity-internal.api.rackspacecloud.com/v2.0/RAX-AUTH/impersonation-tokens", data=json.dumps(payload), headers=headers)
     json_return = json.loads(second_r.text)
+    print(json_return)
     return json_return["access"]["token"]["id"]
 
 
@@ -544,7 +545,7 @@ def imp_prompt(ident,token):
 def help_menu():
 ####Why did I space the help like this, cause something something, then lazy
     help_var = """
-get-rack-id <uuid> or <ip> - get rack password 
+get-rack-pass <uuid> or <ip> - get rack password 
 get-imp-token <username> - get impersonation token 
 get-ng-servers <ddi> - enumerate next gen servers
 get-user <ddi> - get admin user 
@@ -644,12 +645,12 @@ if arg_count == 3:
         else:
             print("This does not appear to be a valid IP address: get-ip-info 10.0.0.1")
         valid = 1
-    if command == "get-rack-id":
-        if sanitize('get-rack-id', arguement):
-            print(get_rack_id(arguement, racker_token))
+    if command == "get-rack-pass":
+        if sanitize('get-rack-pass', arguement):
+            print(get_rack_pass(arguement, racker_token))
             valid = 1
         else:
-            print("This does not appear to be a valid uuid or ip: get-rack-id 10.0.0.1 or get-rack-id 7d9a2738-1594-4461-8cd2-5d0e76625473")
+            print("This does not appear to be a valid uuid or ip: get-rack-pass 10.0.0.1 or get-rack-pass 7d9a2738-1594-4461-8cd2-5d0e76625473")
     if command == "get-imp-token":
         print(get_imp_token(arguement, racker_token))
         valid = 1
@@ -695,4 +696,5 @@ if arg_count == 4:
         #bastion = raw_input("Bastion> ")
         ssh_expect_bast_through(username, bastion, int(ddb_choice),racker_token)
 
-########################################################################################
+#
+#######################################################################################

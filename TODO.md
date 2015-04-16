@@ -9,6 +9,8 @@ Sanatize input for through_bast
 
 Test get-ip-info, test get-ng-servers
 
+Change get-rack-id to get-rack-pass
+
 Converting arguement parsing, to ~~argparse~~ ~~getopt~~ ~~custom arg parsing~~ ok ok argparse. --Branch argparse*
 
 --Convert the ipfinder to the new naming convention, currently gipinfo.
@@ -35,6 +37,7 @@ Special rules for rack connect, try this account 10043249
 
 for servers in ng_servers print server int, name ,and ip
 
+PEP8 Consistency?
 
 
 Add EOF for <ddi>
