@@ -31,6 +31,7 @@ get-db-instances - enumerate database instances , hella beta
 get-ip-info - Get the ip information from ipfinder, hella beta
 
 <ddi> - display servers, select a server, select a bastion, then it will ssh through the bastion to the server
+<https url in cloud control> - display servers, select a server, select a bastion, then it will ssh through the bastion to the server
 servers - show servers 
 tokens - show tokens
 mytoken - show your token 

@@ -478,8 +478,8 @@ def goldservers(ddi, token):
     headers = {'content-type': 'application/json',"X-Auth-Token":imp_token}
     #for dc in datacenters:    
     second_r = requests.get("https://servers.api.rackspacecloud.com/v1.0/"+ddi+"/servers/detail", headers=headers, verify=False)
-    if second_r.text:
-        print(second_r.text)
+    #if second_r.text:
+        #print(second_r.text)
     return(servers)
 
 
@@ -519,7 +519,7 @@ def get_imp_token(user_id,token):
     headers = {'content-type': 'application/json',"X-Auth-Token":token}
     second_r = requests.post("https://identity-internal.api.rackspacecloud.com/v2.0/RAX-AUTH/impersonation-tokens", data=json.dumps(payload), headers=headers)
     json_return = json.loads(second_r.text)
-    print(json_return)
+    #print(json_return)
     return json_return["access"]["token"]["id"]
 
 
