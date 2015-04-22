@@ -443,6 +443,10 @@ def get_ng_servers(ddi, token):
                     #print(server_json)
                     if second_r.text:
                         details = json.loads(second_r.text)
+                        #if details:
+                        #    print("y")
+                        #else:
+                        #    print("n")
                         #print(details)
                         size_ip = len(details["server"]["addresses"]["public"])
                         #print(size_ip)
@@ -463,6 +467,7 @@ def get_ng_servers(ddi, token):
                     else:
                         print("no details")
                         details= ""
+    
     return(details)
 #########################
 

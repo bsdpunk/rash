@@ -1,5 +1,6 @@
 setup.py
 rash/__init__.py
+rash/cloud_network.py
 rash/rash.py
 rash/ssh_script.py
 rash.egg-info/._PKG-INFO

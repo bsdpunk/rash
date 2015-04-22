@@ -7,11 +7,16 @@
 
 Sanatize input for through_bast
 
+Api Call make image smaller
+Cloud network
+
 Test get-ip-info, test get-ng-servers
 
-Change get-rack-id to get-rack-pass
+--Change get-rack-id to get-rack-pass
 
 Converting arguement parsing, to ~~argparse~~ ~~getopt~~ ~~custom arg parsing~~ ok ok argparse. --Branch argparse*
+
+I fight for the user
 
 --Convert the ipfinder to the new naming convention, currently gipinfo.
 
