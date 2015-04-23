@@ -22,6 +22,7 @@ import pkg_resources
 import readline
 import codecs
 import unicodedata
+import cloud_network
 
 version = pkg_resources.require("rash")[0].version
 arg_count = 0
@@ -701,5 +702,18 @@ if arg_count == 4:
         #bastion = raw_input("Bastion> ")
         ssh_expect_bast_through(username, bastion, int(ddb_choice),racker_token)
 
+
+if arg_count == 5:
+    command = sys.argv[1]
+    arg_one = sys.argv[2]
+    arg_two = sys.argv[3]
+    arg_three = sys.argv[4]
+    #arg_four = sys.argv[5]
+    if command == "set-cloud-network":
+        print("hammer")
+        racker_token = get_racker_token(config)
+        guser = get_user(arg_one, racker_token)
+        imp_token = get_imp_token(guser, racker_token)
+        print(cloud_network.set_cloud_network(imp_token, arg_two, arg_three ))
 #
 #######################################################################################
