@@ -24,6 +24,8 @@ Test get-ip-info, test get-ng-servers
 create database; enable root access;
 
 
+SSH hop bastion server: ddi bastion server-name or IP
+
 Converting arguement parsing, to ~~argparse~~ ~~getopt~~ ~~custom arg parsing~~ ok ok argparse. --Branch argparse*
 
 I fight for the user
