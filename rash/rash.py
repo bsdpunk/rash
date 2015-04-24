@@ -23,6 +23,7 @@ import readline
 import codecs
 import unicodedata
 import cloud_network
+import images
 
 version = pkg_resources.require("rash")[0].version
 arg_count = 0
@@ -708,6 +709,16 @@ if arg_count == 4:
         imp_token = get_imp_token(guser, racker_token)
         print(cloud_network.get_cloud_networks(imp_token, arg_two))
         bye()
+    if command == "get-images":
+        #print("hammer")
+        racker_token = get_racker_token(config)
+        guser = get_user(arg_one, racker_token)
+        imp_token = get_imp_token(guser, racker_token)
+        print(images.get_images(imp_token, arg_one, arg_two))
+        bye()
+#
+
+
 #
 
 if arg_count == 5:

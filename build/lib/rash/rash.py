@@ -23,6 +23,7 @@ import readline
 import codecs
 import unicodedata
 import cloud_network
+import images
 
 version = pkg_resources.require("rash")[0].version
 arg_count = 0
@@ -32,7 +33,7 @@ database_count = 0
 ddb_count = 0
 hist_toggle = 0
 prompt_r = 0
-COMMANDS = ['get-ip-info', 'get-rack-pass','get-ng-servers','get-user', 'get-imp-token', 'prompt-imp', 'get-databases', 'mytoken', 'tokens', 'help', 'quit']
+COMMANDS = ['get-ip-info', 'get-rack-pass','get-ng-servers','get-user', 'get-imp-token', 'prompt-imp', 'get-databases', 'get-cloud-networks', 'set-cloud-network', 'mytoken', 'tokens', 'help', 'quit']
 for arg in sys.argv:
     arg_count += 1
 
@@ -701,7 +702,24 @@ if arg_count == 4:
         #server_choice = raw_input("Server number> ")
         #bastion = raw_input("Bastion> ")
         ssh_expect_bast_through(username, bastion, int(ddb_choice),racker_token)
+    if command == "get-cloud-networks":
+        #print("hammer")
+        racker_token = get_racker_token(config)
+        guser = get_user(arg_one, racker_token)
+        imp_token = get_imp_token(guser, racker_token)
+        print(cloud_network.get_cloud_networks(imp_token, arg_two))
+        bye()
+    if command == "get-images":
+        #print("hammer")
+        racker_token = get_racker_token(config)
+        guser = get_user(arg_one, racker_token)
+        imp_token = get_imp_token(guser, racker_token)
+        print(images.get_images(imp_token, arg_one, arg_two))
+        bye()
+#
 
+
+#
 
 if arg_count == 5:
     command = sys.argv[1]
@@ -710,7 +728,7 @@ if arg_count == 5:
     arg_three = sys.argv[4]
     #arg_four = sys.argv[5]
     if command == "set-cloud-network":
-        print("hammer")
+        #print("hammer")
         racker_token = get_racker_token(config)
         guser = get_user(arg_one, racker_token)
         imp_token = get_imp_token(guser, racker_token)
