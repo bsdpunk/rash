@@ -11,17 +11,22 @@ def set_cloud_network(imp_token, region, net_label):
     headers = {'content-type': 'application/json', "X-Auth-Token":imp_token}
     payload = {'network': {'name': net_label}}
     #payload =  json.loads(payload)
-    print(payload)
+    #print(payload)
     r = requests.post("https://"+region+".networks.api.rackspacecloud.com/v2.0/networks", data=json.dumps(payload), headers=headers)
-    print(r.text)
+    #print(r.text)
     json_data = json.loads(r.text)
 
     return(json_data)
 
 
 
-def get_cloud_networks(imp_token, region, ddi):
+def get_cloud_networks(imp_token, region):
     headers = {'content-type': 'application/json', "X-Auth-Token":imp_token}
-    r = requests.post("https://{region}.servers.api.rackspacecloud.com/v2/{ddi}/os-networksv2")
-    fixed = "0"
-    return(fixed)
+    endpoint = "https://"+ region +".networks.api.rackspacecloud.com/v2.0/networks"
+    #print(endpoint)
+    #print(headers)
+    r = requests.get(endpoint, headers=headers)
+    #print(r.text)
+    json_data = json.loads(r.text) 
+
+    return(json_data)

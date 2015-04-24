@@ -5,14 +5,24 @@
 2Sanitize selector?
     sanatize Server Select
 
+rash ddi bast server-name
+
+rash ddi bast, then list
+
 Sanatize input for through_bast
 
 Api Call make image smaller
-Cloud network
+
+Cloud network create, assign
+
+get-imp-token, to take ddi
 
 Test get-ip-info, test get-ng-servers
 
 --Change get-rack-id to get-rack-pass
+
+create database; enable root access;
+
 
 Converting arguement parsing, to ~~argparse~~ ~~getopt~~ ~~custom arg parsing~~ ok ok argparse. --Branch argparse*
 
