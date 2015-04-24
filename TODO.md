@@ -38,6 +38,8 @@ port number selection for ssh
 
 --1reduce number of api calls by, only checking lon for lon and taking lon out of us (rash really needs this. the speed bump will help)
 
+Bastions definable in .rash?
+
 test get-databases
 
 fix egg error
