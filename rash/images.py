@@ -31,3 +31,15 @@ def get_images(imp_token, ddi, region):
     json_data = json.loads(r.text) 
 
     return(json_data)
+
+#def create_image(imp_token, ddi, region, flavor, name):
+#    headers = {'content-type': 'application/json', "X-Auth-Token":imp_token}
+#    endpoint = "https://"+ region +".servers.api.rackspacecloud.com/v2/"+ddi+"/servers"
+#    #"https://"+ region +".networks.api.rackspacecloud.com/v2.0/networks"
+#    #print(endpoint)
+#    #print(headers)
+#    r = requests.get(endpoint, headers=headers)
+#    #print(r.text)
+#    json_data = json.loads(r.text) 
+#
+#    return(json_data)
