@@ -18,6 +18,23 @@ def set_cloud_network(imp_token, region, net_label):
 
     return(json_data)
 
+def create_cloud_subnet(imp_token, region, net_label, cidr):
+
+    cloud_netowrks = get_cloud_networks(imp_token, region)
+    #need to get uuid from label
+    #add fucking x-auth-token
+    headers = {'content-type': 'application/json', "X-Auth-Token":imp_token}
+    payload = {"subnet": { "network_id":net_uuid, }],"cidr":cidr}}
+    #payload =  json.loads(payload)
+    #print(payload)
+    r = requests.post("https://"+region+".networks.api.rackspacecloud.com/v2.0/subnets", data=json.dumps(payload), headers=headers)
+    #print(r.text)
+    json_data = json.loads(r.text)
+
+    return(json_data)
+
+
+
 
 
 def get_cloud_networks(imp_token, region):
