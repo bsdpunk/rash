@@ -49,8 +49,7 @@ servers = {}
 databases = {}
 username = ''
 ddi_bast = {}
-
-
+details = {}
 def complete(text, state):
     #while not state:
         for cmd in COMMANDS:
@@ -659,6 +658,8 @@ if arg_count == 3:
         else:
             print("This does not appear to be a valid uuid or ip: get-rack-pass 10.0.0.1 or get-rack-pass 7d9a2738-1594-4461-8cd2-5d0e76625473")
     if command == "get-imp-token":
+        if arguement.isdigit():
+            arguement = get_user(arguement, racker_token)
         print(get_imp_token(arguement, racker_token))
         valid = 1
 #    if command == "gservers":
