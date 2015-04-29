@@ -352,7 +352,7 @@ def ssh_expect_bast_through(user, bastion, server_number, token):
         rack_pass = get_rack_pass(servers[int(server_number)]['id'],token)
         ssh_line = "ssh rack@"+servers[int(server_number)]['ip']+"    "+rack_pass[1:-1]
         
-        ip = servers[int(server_number)]['ip']
+        ip = ddi_bast[int(server_number)]['ip']
         password = rack_pass
            
         ssh_script.ssh_through_bastion(user, bastion, ip, password)
@@ -433,11 +433,12 @@ def get_ng_servers(ddi, token):
                 size = len(server_json["servers"])
                 #print(size)
                 #The ddb stuff is for a fresh list every time, used with: rash <ddi>
-                ddb_count = 0
+                #ddb_count = 0
                 for i in range(size):
                     global servers
                     global ddi_bast
                     global server_count
+                    global ddb_count
                     ddb_count += 1
                     server_count += 1
                     second_r = requests.get("https://"+dc+".servers.api.rackspacecloud.com/v2/"+ddi+"/servers/"+server_json["servers"][i]["id"], headers=headers, verify=False)
@@ -449,17 +450,23 @@ def get_ng_servers(ddi, token):
                         #else:
                         #    print("n")
                         #print(details)
+                        #print(details["server"]["addresses"]["public"])
                         size_ip = len(details["server"]["addresses"]["public"])
                         #print(size_ip)
+                        #if size_ip == "1":
+                            #server_count -= 1
+                        #print(size_ip)
                         for ip in range(size_ip):
-                            #print(i)
+                            #print(ip)
                         
                             if str(details["server"]["addresses"]["public"][ip]["version"]) == "4":
                                 pub_ip = details["server"]["addresses"]["public"][ip]["addr"]
-                        
+                                #print(pub_ip)
                         if pub_ip:         
                             id_name ={server_count: {'admin':admin_user,'ddi':ddi,'id':str(server_json["servers"][i]["id"]), 'name':str(server_json["servers"][i]["name"]), 'ip':str(pub_ip)}}
                             ddb ={ddb_count: {'name':str(server_json["servers"][i]["name"]), 'ip':str(pub_ip)}}
+                            #print(ddb_count)
+                            #print(server_count)
                             servers.update(id_name)
                             ddi_bast.update(ddb)
                         else:

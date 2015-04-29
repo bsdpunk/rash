@@ -6,7 +6,7 @@ install_requires = ['requests']
 
 setup(
     name='rash',
-    version='0.89',
+    version='0.91',
     packages=['rash',],
     install_requires=install_requires,
     entry_points = { 'console_scripts': [
