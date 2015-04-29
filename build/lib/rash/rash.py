@@ -33,7 +33,7 @@ database_count = 0
 ddb_count = 0
 hist_toggle = 0
 prompt_r = 0
-COMMANDS = ['get-ip-info', 'get-rack-pass','get-ng-servers','get-user', 'get-imp-token', 'prompt-imp', 'get-databases', 'get-cloud-networks', 'set-cloud-network', 'mytoken', 'tokens', 'help', 'quit']
+COMMANDS = ['get-ip-info', 'create-cloud-subnet', 'get-rack-pass','get-ng-servers','get-user', 'get-imp-token', 'prompt-imp', 'get-databases', 'get-cloud-networks', 'mytoken', 'tokens', 'help', 'quit']
 for arg in sys.argv:
     arg_count += 1
 
