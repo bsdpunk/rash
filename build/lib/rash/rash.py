@@ -734,5 +734,19 @@ if arg_count == 5:
         guser = get_user(arg_one, racker_token)
         imp_token = get_imp_token(guser, racker_token)
         print(cloud_network.set_cloud_network(imp_token, arg_two, arg_three ))
+if arg_count == 6:
+    command = sys.argv[1]
+    arg_one = sys.argv[2]
+    arg_two = sys.argv[3]
+    arg_three = sys.argv[4]
+    arg_four = sys.argv[5] 
+    if command == "create-cloud-subnet":
+        #print("hammer")
+        racker_token = get_racker_token(config)
+        guser = get_user(arg_one, racker_token)
+        imp_token = get_imp_token(guser, racker_token)
+        print(cloud_network.create_cloud_subnet(imp_token, arg_two, arg_three, arg_four ))
+
+    
 #
 #######################################################################################

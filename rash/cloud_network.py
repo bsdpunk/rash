@@ -20,11 +20,23 @@ def set_cloud_network(imp_token, region, net_label):
 
 def create_cloud_subnet(imp_token, region, net_label, cidr):
 
-    cloud_netowrks = get_cloud_networks(imp_token, region)
+    cloud_networks = get_cloud_networks(imp_token, region)
+    #cloud_networks = json.loads(cloud_networks)
+    for item in cloud_networks["networks"]:
+        if item['name'] == net_label:
+            print(item['id'])
+            net_uuid = item['id']
+    
+    if 'net_uuid' in locals():
+        print("Adding to existing Neutron network")
+    else:
+        new_network = set_cloud_network(imp_token, region, net_label)
+        net_uuid = new_network['network']['id']
+
     #need to get uuid from label
     #add fucking x-auth-token
     headers = {'content-type': 'application/json', "X-Auth-Token":imp_token}
-    payload = {"subnet": { "network_id":net_uuid, }],"cidr":cidr}}
+    payload = {"subnet": { "network_id":net_uuid,"ip_version": "4", "cidr":cidr}}
     #payload =  json.loads(payload)
     #print(payload)
     r = requests.post("https://"+region+".networks.api.rackspacecloud.com/v2.0/subnets", data=json.dumps(payload), headers=headers)

@@ -33,7 +33,7 @@ database_count = 0
 ddb_count = 0
 hist_toggle = 0
 prompt_r = 0
-COMMANDS = ['get-ip-info', 'get-rack-pass','get-ng-servers','get-user', 'get-imp-token', 'prompt-imp', 'get-databases', 'get-cloud-networks', 'set-cloud-network', 'mytoken', 'tokens', 'help', 'quit']
+COMMANDS = ['get-ip-info', 'create-cloud-subnet', 'get-rack-pass','get-ng-servers','get-user', 'get-imp-token', 'prompt-imp', 'get-databases', 'get-cloud-networks', 'mytoken', 'tokens', 'help', 'quit']
 for arg in sys.argv:
     arg_count += 1
 
@@ -734,5 +734,19 @@ if arg_count == 5:
         guser = get_user(arg_one, racker_token)
         imp_token = get_imp_token(guser, racker_token)
         print(cloud_network.set_cloud_network(imp_token, arg_two, arg_three ))
+if arg_count == 6:
+    command = sys.argv[1]
+    arg_one = sys.argv[2]
+    arg_two = sys.argv[3]
+    arg_three = sys.argv[4]
+    arg_four = sys.argv[5] 
+    if command == "create-cloud-subnet":
+        #print("hammer")
+        racker_token = get_racker_token(config)
+        guser = get_user(arg_one, racker_token)
+        imp_token = get_imp_token(guser, racker_token)
+        print(cloud_network.create_cloud_subnet(imp_token, arg_two, arg_three, arg_four ))
+
+    
 #
 #######################################################################################
