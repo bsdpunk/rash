@@ -1,6 +1,7 @@
 setup.py
 rash/__init__.py
 rash/cloud_network.py
+rash/dbinstance.py
 rash/images.py
 rash/rash.py
 rash/ssh_script.py

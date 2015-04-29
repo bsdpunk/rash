@@ -81,14 +81,14 @@ def ssh_through_bastion(user, bastion, pub_ip, password):
     #And here is where you can tell I used to be a perl programmer
     p = re.compile('\$')
     password = p.sub('\044', password)
-    print(password)
+    #print(password)
     output = []
 
     output.append('#!/usr/bin/env expect\n')
-    print(user)
-    print(bastion)
+    #print(user)
+    #print(bastion)
     output.append("set password {"+password+"}\n")
-    output.append("send_user $password\n")
+    #output.append("send_user $password\n")
     #loginInfo['admin_password'] = re.escape(loginInfo['admin_password'])
     output.append('spawn -noecho ssh -l '+ user + ' -o StrictHostKeyChecking=no' 
         ' -o CheckHostIP=no -o UserKnownHostsFile=/dev/null '+ bastion +'\n')
