@@ -24,6 +24,7 @@ import codecs
 import unicodedata
 import cloud_network
 import images
+import dbinstance
 
 version = pkg_resources.require("rash")[0].version
 arg_count = 0
@@ -724,6 +725,14 @@ if arg_count == 4:
         imp_token = get_imp_token(guser, racker_token)
         print(images.get_images(imp_token, arg_one, arg_two))
         bye()
+    if command == "get-db-flavors":
+        #print("hammer")
+        racker_token = get_racker_token(config)
+        guser = get_user(arg_one, racker_token)
+        imp_token = get_imp_token(guser, racker_token)
+        print(dbinstance.get_db_flavors(imp_token, arg_one, arg_two))
+        bye()
+ 
 #
 
 
@@ -741,6 +750,9 @@ if arg_count == 5:
         guser = get_user(arg_one, racker_token)
         imp_token = get_imp_token(guser, racker_token)
         print(cloud_network.set_cloud_network(imp_token, arg_two, arg_three ))
+
+
+
 if arg_count == 6:
     command = sys.argv[1]
     arg_one = sys.argv[2]

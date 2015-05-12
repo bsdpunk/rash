@@ -18,7 +18,7 @@ def set_db_root(imp_token, ddi, region, database):
 
     return(json_data)
 
-def get_db_flavors(imp_token, ddi, region, database):
+def get_db_flavors(imp_token, ddi, region):
     headers = {'content-type': 'application/json', "X-Auth-Token":imp_token}
     endpoint = "https://"+region+".databases.api.rackspacecloud.com/v1.0/"+ddi+"/flavors"
     #"https://"+ region +".networks.api.rackspacecloud.com/v2.0/networks"
