@@ -4,6 +4,7 @@ rash/cloud_network.py
 rash/dbinstance.py
 rash/images.py
 rash/rash.py
+rash/servers_action.py
 rash/ssh_script.py
 rash.egg-info/._PKG-INFO
 rash.egg-info/._SOURCES.txt

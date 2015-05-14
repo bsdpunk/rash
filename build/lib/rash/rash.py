@@ -25,6 +25,7 @@ import unicodedata
 import cloud_network
 import images
 import dbinstance
+import servers_action
 
 version = pkg_resources.require("rash")[0].version
 arg_count = 0
@@ -251,7 +252,7 @@ def cli():
             else:
                 ssh_expect_bast_through(username, bastion, int(ddb_choice),racker_token)
         	
-   #####################
+    #####################
     # This is the ssh through bastion bit that, creates an expect script to connect and passes you
     # to the script
     ##################
@@ -464,8 +465,8 @@ def get_ng_servers(ddi, token):
                                 pub_ip = details["server"]["addresses"]["public"][ip]["addr"]
                                 #print(pub_ip)
                         if pub_ip:         
-                            id_name ={server_count: {'admin':admin_user,'ddi':ddi,'id':str(server_json["servers"][i]["id"]), 'name':str(server_json["servers"][i]["name"]), 'ip':str(pub_ip)}}
-                            ddb ={ddb_count: {'name':str(server_json["servers"][i]["name"]), 'ip':str(pub_ip)}}
+                            id_name ={server_count: {'admin':admin_user,'ddi':ddi,'id':server_json["servers"][i]["id"], 'name':server_json["servers"][i]["name"], 'ip':str(pub_ip)}}
+                            ddb ={ddb_count: {'name':server_json["servers"][i]["name"], 'ip':pub_ip}}
                             #print(ddb_count)
                             #print(server_count)
                             servers.update(id_name)
@@ -670,6 +671,12 @@ if arg_count == 3:
             arguement = get_user(arguement, racker_token)
         print(get_imp_token(arguement, racker_token))
         valid = 1
+    if command == "get-fg-servers":
+        racker_token = get_racker_token(config)
+        guser = get_user(arguement, racker_token)
+        imp_token = get_imp_token(guser, racker_token) 
+        pprint(servers_action.get_fg_servers(imp_token, arguement))
+        valid = 1
 #    if command == "gservers":
 #        print(gservers(arguement, racker_token))
 #        valid = 1
@@ -766,6 +773,8 @@ if arg_count == 6:
         imp_token = get_imp_token(guser, racker_token)
         print(cloud_network.create_cloud_subnet(imp_token, arg_two, arg_three, arg_four ))
 
+#######################################################################################
+#
 #######################################################################################
 #
 #######################################################################################
